@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string>
 #include <string.h>
-#include <sys/malloc.h>
 #include <stdlib.h>
 #include <string.h>
 #include <fstream>
@@ -11,9 +10,9 @@
 
 #define MAX 1000
 
-using namespace std; //使用 std的作用域
+using namespace std; // 使用 std的作用域
 
-//书库类型结构体 in stack //结构体类型定义语法
+// 书库类型结构体 in stack //结构体类型定义语法
 typedef struct Circulation {
     /* data */
     Book data;
@@ -21,11 +20,11 @@ typedef struct Circulation {
 } Cir,
     *PCir; // 结构体变量 Circulation类型的 变量 cir, Cir类型的指针变量 strCir,
 
-//创建书库
+// 创建书库
 void creatCir(PCir &L, int n) {
-    //开辟内存 sizeof 计算一个指定类型的大小
+    // 开辟内存 sizeof 计算一个指定类型的大小
     L = (PCir)malloc(sizeof(Cir)); // 返回指针，指向一段可用内存的起始地址
-    L->next = nullptr;                // 初始化 next 为NULL
+    L->next = nullptr;             // 初始化 next 为NULL
     PCir p, q;
     q = L;
 
