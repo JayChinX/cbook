@@ -21,6 +21,7 @@ int main(int, char **) {
     std::cout << "pow func called!" << std::endl;
 #endif
     std::cout << "result: " << outputValue << std::endl;
+    std::cout << "result: " << __cplusplus << std::endl;
     // start();
     printf("This code running.\n");
     return 0;
