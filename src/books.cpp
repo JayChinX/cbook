@@ -3,7 +3,7 @@
 #include <string>
 #include <string.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string>
 #include <fstream>
 #include <books.h>
 #include <book.h>
@@ -34,7 +34,8 @@ void creatCir(PCir &L, int n) {
 
     for (int i = 0; i < n; i++) {
         // 返回指针
-        p = (PCir)malloc(sizeof(Cir));
+        Cir cir;
+        p = &cir;
         // IO 操作符 cin 抽取操作符(从屏幕输入抽取)
         cout << "请输入图书编号: " << ends;
         cin >> p->data.id;

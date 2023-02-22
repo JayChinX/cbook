@@ -15,6 +15,9 @@
       },
       "presentation": {
         "panel": "shared"
+      },
+      "linux": {
+        "type": "shell",
       }
     },
     {
@@ -33,9 +36,14 @@
       "options": {
         "cwd": "${fileDirname}"
       },
-      "problemMatcher": ["$gcc"],
+      "problemMatcher": [
+        "$gcc"
+      ],
       "group": "build",
-      "detail": "调试器生成的任务。"
+      "detail": "调试器生成的任务。",
+      "linux": {
+        "type": "shell",
+      }
     },
     {
       "type": "cppbuild",
@@ -54,9 +62,14 @@
       "options": {
         "cwd": "${fileDirname}"
       },
-      "problemMatcher": ["$gcc"],
+      "problemMatcher": [
+        "$gcc"
+      ],
       "group": "build",
-      "detail": "调试器生成的任务。"
+      "detail": "调试器生成的任务。",
+      "linux": {
+        "type": "shell",
+      }
     }
   ]
 }

@@ -1,18 +1,18 @@
-#pragma once
-
 #ifndef BOOKS_BOOK_H
 #define BOOKS_BOOK_H
 
 #include <string>
 
-//图书类 //类定义
+// 图书类 //类定义
 class Book {
   public:
-    std::string id;     //编号
-    std::string name;   //名称
-    std::string author; //作者
-    std::string press;  //出版社
-    std::string price;  //价格
+    Book() {}
+    ~Book() {}
+    std::string id;     // 编号
+    std::string name;   // 名称
+    std::string author; // 作者
+    std::string press;  // 出版社
+    std::string price;  // 价格
 
   public:
     void setId(std::string id);
