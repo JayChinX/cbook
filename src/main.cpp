@@ -22,7 +22,7 @@ int main(int, char **) {
 #endif
     std::cout << "result: " << outputValue << std::endl;
     std::cout << "result: " << __cplusplus << std::endl;
-    // start();
+    start();
     printf("This code running.\n");
     return 0;
 }
