@@ -79,3 +79,5 @@ tmp
 public/
 *.lh
 *.DS_Store
+
+ffmpeg-*
