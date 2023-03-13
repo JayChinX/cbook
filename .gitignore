@@ -81,3 +81,4 @@ public/
 *.DS_Store
 
 ffmpeg-*
+doc/video
