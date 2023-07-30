@@ -82,3 +82,4 @@ public/
 
 ffmpeg-*
 doc/video
+**/**.out.**/
