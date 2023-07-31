@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdlib>
 #include <deque>
 #include <iostream>
@@ -16,6 +17,24 @@ int main(int argc, char **argv) {
          ++it) {
         std::cout << ' ' << *it << std::endl;
     }
-    system("pause");
+
+    fifth.push_back(10);
+
+    std::for_each(fifth.begin(), fifth.end(), [&](const int &index) {
+        std::cout << index << ",";
+        if (&index == &fifth.back()) { std::cout << std::endl; }
+    });
+
+    fifth.pop_back();
+
+    fifth.push_back(5);
+    fifth.push_front(0);
+
+    for (std::deque<int>::iterator it = fifth.begin(); it != fifth.end();
+         ++it) {
+        std::cout << *it << ",";
+    }
+
+    // system("pause");
     return 0;
 }
