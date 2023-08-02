@@ -1,8 +1,10 @@
 
 #include <algorithm>
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
+#include <ostream>
 #include <set>
 
 #define MACRO_FUNC()       \
@@ -16,6 +18,18 @@
         printf("hello hello hello"); \
         printf("hello");             \
     }
+
+#define p()                \
+    do {                   \
+        printf("Hello\n"); \
+        printf("World\n"); \
+    } while (0)
+
+#define macro(x) \
+    do {         \
+        x += 2;  \
+        x += 1;  \
+    } while (0)
 
 class AverageValue {
   public:
@@ -50,6 +64,12 @@ int main(int argc, char **argv) {
     std::cout << "value: " << a.value() << std::endl;
 
     MACRO_FUNC();
+    p();
+    int c = 1;
+    macro(c);
+
+    std::cout << c << std::endl;
+
     system("pause");
     return 0;
 }

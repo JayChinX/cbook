@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ostream>
 #include <vector>
+
 int main(int argc, char **argv) {
     std::vector<double> a{1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::cout << "a size = " << a.size() << std::endl;
