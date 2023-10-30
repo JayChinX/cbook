@@ -31,11 +31,25 @@ void stlSort() {
     });
 }
 
-void bubbleSort() {
+void bubbleSort(int array[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            int tmp = 0;
+            if (array[j] > array[j + 1]) {
+                tmp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = tmp;
+            }
+            printArrays(array, size);
+        }
+        // printArrays(array, size);
+    }
 }
 
 int main(int argc, char **argv) {
-    stlSort();
+    // stlSort();
+    int array[] = {0, 2, 8, 7, 4, 1, 6, 3, 5, 9};
+    bubbleSort(array, sizeof(array) / sizeof(array[0]));
     system("pause");
     return 0;
 }

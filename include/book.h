@@ -15,7 +15,7 @@ class Book {
     std::string price;  // 价格
 
   public:
-    void setId(std::string id);
+    Book setId(std::string id);
 };
 
 #endif
