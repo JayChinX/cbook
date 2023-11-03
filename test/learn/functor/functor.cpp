@@ -32,25 +32,28 @@
     } while (0)
 
 class AverageValue {
-  public:
-    AverageValue() : sum(0), num(0) {}
+public:
+    AverageValue() = default;
 
-    void operator()(int elem) {
+    void operator()(int elem)
+    {
         sum += elem;
         num++;
     }
 
-    double value() {
+    double value()
+    {
         // return sum * 1.0 / num;
         return static_cast<double>(sum * 1.0 / num);
     }
 
-  private:
-    int num;
-    int sum;
+private:
+    int num = 0;
+    int sum = 0;
 };
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     std::set<int> sets;
     sets.insert(1);
     sets.insert(2);

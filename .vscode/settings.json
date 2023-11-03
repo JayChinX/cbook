@@ -88,22 +88,89 @@
     "drawio",
     "jsx"
   ],
-  "cSpell.words": [
-    "cmake",
-    "当前状态"
-  ],
+  "cSpell.words": ["cmake", "当前状态"],
   "code-runner.runInTerminal": true,
   "files.encoding": "utf8",
-  "python.testing.unittestArgs": [
-    "-v",
-    "-s",
-    "./test",
-    "-p",
-    "*test.py"
-  ],
+  "python.testing.unittestArgs": ["-v", "-s", "./test", "-p", "*test.py"],
   "python.testing.pytestEnabled": false,
   "python.testing.unittestEnabled": true,
   "code-runner.showRunCommandInEditorContextMenu": true,
   "partialDiff.hideCommandsOnContextMenu": false,
+  "clangd.arguments": [
+    "--background-index",
+    "--compile-commands-dir=build",
+    "-j=12",
+    // "--folding-ranges",
+    "--query-driver=/usr/bin/clang++",
+    "--clang-tidy",
+    "--all-scopes-completion",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--header-insertion=never",
+    "--pch-storage=disk"
+  ],
+  // 代码样式
+  // "editor.semanticTokenColorCustomizations": {
+  //   "enabled": true,
+  //   "rules": {
+  //     "parameter": "#306b72",
+  //     "class": {
+  //       "fontStyle": "bold",
+  //       "foreground": "#729de3"
+  //     },
+  //     "type.fileScope": {
+  //       "fontStyle": "bold",
+  //       "foreground": "#729de3"
+  //     },
+  //     // for auto
+  //     "type": {
+  //       "fontStyle": "bold",
+  //       "foreground": "#729de3"
+  //     },
+  //     "function": {
+  //       "foreground": "#e5b124"
+  //     },
+  //     "typeParameter": {
+  //       "foreground": "#729de3",
+  //       "fontStyle": "italic bold"
+  //     },
+  //     "variable": "#26cdca",
+  //     "variable.static": {
+  //       "foreground": "#8f5daf",
+  //       "fontStyle": "bold"
+  //     },
+  //     "enum": {
+  //       "fontStyle": "bold",
+  //       "foreground": "#729de3"
+  //     },
+  //     "enumMember": "#397797",
+  //     "macro": {
+  //       "foreground": "#8f5daf",
+  //       "fontStyle": "bold"
+  //     },
+  //     "method": {
+  //       "foreground": "#e5b124",
+  //       "fontStyle": "underline"
+  //     },
+  //     // 只读量加粗
+  //     "*.readonly": {
+  //       "fontStyle": "bold"
+  //     },
+  //     // 只读量等效为宏
+  //     "*.fileScope": {
+  //       "foreground": "#8f5daf",
+  //       "fontStyle": "bold"
+  //     },
+  //     "comment": "#505050",
+  //     "namespace": {
+  //       "foreground": "#00d780",
+  //       "fontStyle": "bold"
+  //     },
+  //     "property": {
+  //       "foreground": "#7ca6b7",
+  //       "fontStyle": "underline"
+  //     }
+  //   }
+  // },
   "cmake.generator": "Unix Makefiles"
 }

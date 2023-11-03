@@ -1,3 +1,4 @@
+
 #include <cassert>
 #include <cstddef>
 #include <iostream>
@@ -11,7 +12,8 @@
 #include <cmath>
 #endif
 
-int main(int, char **) {
+int main(int, char **)
+{
     double inputValue = 5.0;
 #ifdef USE_MYMATH
     double outputValue = mySquare(inputValue);

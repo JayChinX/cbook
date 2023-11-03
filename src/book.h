@@ -5,16 +5,16 @@
 
 // 图书类 //类定义
 class Book {
-  public:
+public:
     Book() {}
     ~Book() {}
-    std::string id;     // 编号
-    std::string name;   // 名称
-    std::string author; // 作者
-    std::string press;  // 出版社
-    std::string price;  // 价格
+    std::string id;      // 编号
+    std::string name;    // 名称
+    std::string author;  // 作者
+    std::string press;   // 出版社
+    std::string price;   // 价格
 
-  public:
+public:
     Book setId(std::string id);
 };
 

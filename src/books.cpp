@@ -1,7 +1,5 @@
 #include <iostream>
 #include <stdio.h>
-#include <string>
-#include <string.h>
 #include <stdlib.h>
 #include <string>
 #include <fstream>
@@ -10,21 +8,22 @@
 
 #define MAX 1000
 
-using namespace std; // 使用 std的作用域
+using namespace std;  // 使用 std的作用域
 
 // 书库类型结构体 in stack //结构体类型定义语法
-typedef struct Circulation {
+using Cir = struct Circulation {
     /* data */
     Book data;
     struct Circulation *next;
-} Cir,
-    *PCir; // 结构体变量 Circulation类型的 变量 cir, Cir类型的指针变量 strCir,
+};
+using PCir = Cir *;  // 结构体变量 Circulation类型的 变量 cir, Cir类型的指针变量 strCir,
 
 // 创建书库
-void creatCir(PCir &L, int n) {
+void creatCir(PCir &L, int n)
+{
     // 开辟内存 sizeof 计算一个指定类型的大小
-    L = (PCir)malloc(sizeof(Cir)); // 返回指针，指向一段可用内存的起始地址
-    L->next = nullptr;             // 初始化 next 为NULL
+    L = (PCir)malloc(sizeof(Cir));  // 返回指针，指向一段可用内存的起始地址
+    L->next = nullptr;              // 初始化 next 为NULL
     PCir p, q;
     q = L;
 
@@ -60,27 +59,30 @@ void creatCir(PCir &L, int n) {
 
     // 写入文件
     ofstream ofs;
-    ofs.open("text.txt", ios::app); // 写入权限
+    ofs.open("text.txt", ios::app);  // 写入权限
     // 链表
     PCir s;
     s = L->next;
     while (s) {
-        ofs << s->data.id << " " << s->data.name << " " << s->data.author << " "
-            << s->data.press << " " << s->data.price << " " << endl;
+        ofs << s->data.id << " " << s->data.name << " " << s->data.author << " " << s->data.press << " "
+            << s->data.price << " " << endl;
         s = s->next;
     }
     ofs.close();
 }
 
 // 显示录入的信息
-void display(PCir &L) {
+void display(PCir &L)
+{
     ifstream ifs;
     ifs.open("text.txt", ios::in);
     char buf[10000] = {0};
     int i = 0;
     cout << "下面是你录入的信息:" << endl;
     while (ifs >> buf) {
-        if (i % 5 == 0) { cout << endl; }
+        if (i % 5 == 0) {
+            cout << endl;
+        }
         cout << buf << " ";
         i++;
     }
@@ -88,7 +90,8 @@ void display(PCir &L) {
 }
 
 // 查找id
-void findById(char *arr) {
+void findById(char *arr)
+{
     char a[100];
     strcpy(a, arr);
     ifstream ifs;
@@ -114,12 +117,15 @@ void findById(char *arr) {
             i++;
         }
     }
-    if (i == 0) { cout << "编号不存在！！！" << endl; }
+    if (i == 0) {
+        cout << "编号不存在！！！" << endl;
+    }
 
     ifs.close();
 }
 
-void findByName(char *arr) {
+void findByName(char *arr)
+{
     char a[100];
     strcpy(a, arr);
     ifstream ifs;
@@ -144,9 +150,8 @@ void findByName(char *arr) {
             if (n == 0) {
                 i = 0;
                 cout << "查找到图书信息:" << endl;
-                cout << pbook->id << " " << pbook->name << " " << pbook->author
-                     << " " << pbook->press << " " << pbook->price << " "
-                     << endl;
+                cout << pbook->id << " " << pbook->name << " " << pbook->author << " " << pbook->press << " "
+                     << pbook->price << " " << endl;
                 break;
             }
             free(pbook);
@@ -154,11 +159,14 @@ void findByName(char *arr) {
         }
         i++;
     }
-    if (i != 0) { cout << "图书不存在！！！" << endl; }
+    if (i != 0) {
+        cout << "图书不存在！！！" << endl;
+    }
     ifs.close();
 }
 
-void deleteById(char *arr) {
+void deleteById(char *arr)
+{
     char a[100];
     strcpy(a, arr);
 
@@ -190,9 +198,8 @@ void deleteById(char *arr) {
                 deleted = true;
             } else {
                 // 不相等，输出到临时文件
-                ofs << pbook->id << " " << pbook->name << " " << pbook->author
-                    << " " << pbook->press << " " << pbook->price << " "
-                    << endl;
+                ofs << pbook->id << " " << pbook->name << " " << pbook->author << " " << pbook->press << " "
+                    << pbook->price << " " << endl;
             }
             free(pbook);
             pbook = new Book();
@@ -208,15 +215,16 @@ void deleteById(char *arr) {
 }
 
 // 插入
-void insert(PCir &L, char *arr, Book *book) {
+void insert(PCir &L, char *arr, Book *book)
+{
     PCir p, q, s;
 }
 
 // 修改
-void modify(PCir &L, char *arr, Book *book) {
-}
+void modify(PCir &L, char *arr, Book *book) {}
 
-void menu() {
+void menu()
+{
     cout << "*****************************" << endl;
     cout << "******欢迎光临图书管理系统******" << endl;
     cout << "******  1. 输入1  退出程序  ******" << endl;
@@ -230,7 +238,8 @@ void menu() {
     cout << "*****************************" << endl;
 }
 
-void start() {
+void start()
+{
     menu();
     PCir L;
     Book book;
@@ -238,7 +247,9 @@ void start() {
     int n = 0;
     char id[100];
     while (cin >> x) {
-        if (x == 1) { break; }
+        if (x == 1) {
+            break;
+        }
 
         switch (x) {
             case 2:
@@ -268,18 +279,15 @@ void start() {
                 deleteById(id);
                 break;
             case 7:
-                cout
-                    << "请输入您要进行插入地方图书的编号以及插入的图书编号，图书名，图书作者，图书出版社，价格"
-                    << endl;
-                cin >> id >> book.id >> book.name >> book.author >> book.press
-                    >> book.price;
+                cout << "请输入您要进行插入地方图书的编号以及插入的图书编号，图书名，图"
+                        "书作者，图书出版社，价格"
+                     << endl;
+                cin >> id >> book.id >> book.name >> book.author >> book.press >> book.price;
                 insert(L, id, &book);
                 break;
             case 8:
-                cout << "请输入您要进行修改的用户的编号以及您需要修改的信息"
-                     << endl;
-                cin >> book.id >> book.name >> book.author >> book.press
-                    >> book.price;
+                cout << "请输入您要进行修改的用户的编号以及您需要修改的信息" << endl;
+                cin >> book.id >> book.name >> book.author >> book.press >> book.price;
                 modify(L, id, &book);
                 break;
             default:
