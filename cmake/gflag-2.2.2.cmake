@@ -9,6 +9,8 @@ set(GFLAG_INCLUDE_DIR   ${GFLAG_ROOT}/include)
 
 # 指定git仓库地址
 set(GFLAG_URL           https://github.com/gflags/gflags/archive/v2.2.2.zip)
+# 配置文件 SHA256 避免每次都下载
+set(FILE_HASH           19713a36c9f32b33df59d1c79b4958434cb005b5b47dc5400a7a4b078111d9b5)
 # set(SPDLOG_GIT_TAG  v1.4.1)  # 指定版本
 # set(SPDLOG_GIT_URL      https://github.com/gabime/spdlog.git)  # 指定git仓库地址
 # # 指定配置指令（注意此处修改了安装目录，否则默认情况下回安装到系统目录）
@@ -20,6 +22,7 @@ set(GFLAG_INSTALL       cd ${GFLAG_ROOT}/src/gflag-2.2.2 && make install)
 
 ExternalProject_Add(gflag-2.2.2
         URL                   ${GFLAG_URL}
+        URL_HASH              SHA256=${FILE_HASH}
         DOWNLOAD_NAME         gflag-2.2.2.zip
         PREFIX                ${GFLAG_ROOT}
         CONFIGURE_COMMAND     ${GFLAG_CONFIGURE}
