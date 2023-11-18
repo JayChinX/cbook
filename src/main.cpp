@@ -2,8 +2,8 @@
 #include <cassert>
 #include <cstddef>
 #include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include "books.h"
 
 #ifdef USE_MYMATH

@@ -1,6 +1,7 @@
+#include <cstring>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <string>
 #include <fstream>
 #include "books.h"
