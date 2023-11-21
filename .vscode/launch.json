@@ -11,9 +11,11 @@
       "cwd": "${fileDirname}",
       "environment": [],
       "externalConsole": true,
+      "internalConsoleOptions": "openOnFirstSessionStart",
       "MIMode": "lldb",
       "linux": {
         "externalConsole": false,
+        "internalConsoleOptions": "neverOpen",
         "MIMode": "gdb",
         "miDebuggerPath": "/usr/bin/gdb"
       },
@@ -29,9 +31,11 @@
       "cwd": "${fileDirname}",
       "environment": [],
       "externalConsole": true,
+      "internalConsoleOptions": "openOnFirstSessionStart",
       "MIMode": "lldb",
       "linux": {
         "externalConsole": false,
+        "internalConsoleOptions": "neverOpen",
         "MIMode": "gdb",
         "miDebuggerPath": "/usr/bin/gdb"
       },
@@ -51,6 +55,7 @@
       "MIMode": "lldb",
       "linux": {
         "externalConsole": false,
+        "internalConsoleOptions": "neverOpen",
         "MIMode": "gdb",
         "miDebuggerPath": "/usr/bin/gdb"
       },
