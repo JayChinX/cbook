@@ -10,8 +10,8 @@
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-      "externalConsole": true,
-      "internalConsoleOptions": "openOnFirstSessionStart",
+      "externalConsole": false,
+      "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "lldb",
       "linux": {
         "externalConsole": false,
@@ -30,8 +30,8 @@
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-      "externalConsole": true,
-      "internalConsoleOptions": "openOnFirstSessionStart",
+      "externalConsole": false,
+      "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "lldb",
       "linux": {
         "externalConsole": false,
@@ -50,8 +50,8 @@
       "stopAtEntry": false,
       "cwd": "${command:cmake.getLaunchTargetDirectory}",
       "environment": [],
-      "externalConsole": true,
-      "internalConsoleOptions": "neverOpen",
+      "externalConsole": false,
+      "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "lldb",
       "linux": {
         "externalConsole": false,

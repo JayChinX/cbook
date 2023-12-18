@@ -25,8 +25,8 @@ void creatCir(PCir &L, int n)
     // 开辟内存 sizeof 计算一个指定类型的大小
     L = (PCir)malloc(sizeof(Cir));  // 返回指针，指向一段可用内存的起始地址
     L->next = nullptr;              // 初始化 next 为NULL
-    PCir p, q;
-    q = L;
+    PCir p, q;                      // 尾节点指针q  尾节点的下一个指针 p
+    q = L;                          // 链表节点初始化完成
 
     // 格式输出
     // IO操作符 cout << 向屏幕输出
@@ -34,8 +34,8 @@ void creatCir(PCir &L, int n)
 
     for (int i = 0; i < n; i++) {
         // 返回指针
-        Cir cir;
-        p = &cir;
+        Cir cir;   // 生成一个新的节点
+        p = &cir;  // 关联尾节点
         // IO 操作符 cin 抽取操作符(从屏幕输入抽取)
         cout << "请输入图书编号: " << ends;
         cin >> p->data.id;
@@ -54,8 +54,8 @@ void creatCir(PCir &L, int n)
 
         //
         p->next = nullptr;
-        q->next = p;
-        q = p;
+        q->next = p;  // 与链表关联
+        q = p;        // 尾节点移动
     }
 
     // 写入文件
@@ -93,8 +93,8 @@ void display(PCir &L)
 // 查找id
 void findById(char *arr)
 {
-    char a[100];
-    strcpy(a, arr);
+    char id[100];
+    strcpy(id, arr);  // copy id 信息
     ifstream ifs;
     ifs.open("text.txt", ios::in);
     char buf[1000] = {0};
@@ -102,7 +102,7 @@ void findById(char *arr)
     while (ifs >> buf) {
         // 函数strcmp的功能是比较两个字符串的大小。也就是把字符串str1和str2从首字符开始逐个字符的进行比较，直到某个字符不相同或者其中一个字符串比较完毕才停止比较
         // n == 0 表示相等
-        int n = strcmp(a, buf);
+        int n = strcmp(id, buf);
         if (n == 0) {
             cout << "查找到图书信息:" << endl;
             cout << buf << " " << ends;
@@ -242,55 +242,68 @@ void menu()
 void start()
 {
     menu();
-    PCir L;
-    Book book;
     int x = 0;
-    int n = 0;
-    char id[100];
     while (cin >> x) {
         if (x == 1) {
             break;
         }
 
         switch (x) {
-            case 2:
+            case 2: {  // 录入信息
+                int n = 0;
+                PCir L;
                 cout << "开始录入信息，请输入你要录入几本书的信息:" << endl;
                 cin >> n;
                 creatCir(L, n);
                 cout << "录入完毕!" << endl;
                 break;
-            case 3:
+            }
+            case 3: {
+                // 陈列信息
+                PCir L;
                 display(L);
                 break;
-            case 4:
+            }
+            case 4: {  // 依据 id 查找信息
+                char id[100];
                 cout << "请输入你要查找的图书编号:" << endl;
                 cin >> id;
                 findById(id);
                 break;
+            }
             case 5:
+                // 依据 name 查找信息
                 char name[100];
                 cout << "请输入你要查找的图书名:" << endl;
                 cin >> name;
                 findByName(name);
                 break;
-            case 6:
-                // 删除
+            case 6: {  // 删除信息
+                char id[100];
                 cout << "请输入您要删除图书的编号:" << endl;
                 cin >> id;
                 deleteById(id);
                 break;
-            case 7:
+            }
+            case 7: {  // 插入信息
+                char id[100];
+                Book book;
+                PCir L;
                 cout << "请输入您要进行插入地方图书的编号以及插入的图书编号，图书名，图"
                         "书作者，图书出版社，价格"
                      << endl;
                 cin >> id >> book.id >> book.name >> book.author >> book.press >> book.price;
                 insert(L, id, &book);
                 break;
-            case 8:
+            }
+            case 8: {  // 修改信息
+                char id[100];
+                Book book;
+                PCir L;
                 cout << "请输入您要进行修改的用户的编号以及您需要修改的信息" << endl;
                 cin >> book.id >> book.name >> book.author >> book.press >> book.price;
                 modify(L, id, &book);
-                break;
+            } break;
             default:
                 cout << "你的输入有误，请重新输入" << endl;
         }

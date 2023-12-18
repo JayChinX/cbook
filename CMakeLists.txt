@@ -100,9 +100,9 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 include(googletest)
 # target_link_libraries(test_spdlog PRIVATE spdlog)
 
-include(gflag-2.2.2)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${GFLAG_LIB_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${GFLAG_INCLUDE_DIR})
+# include(gflag-2.2.2)
+# target_link_libraries(${PROJECT_NAME} PRIVATE ${GFLAG_LIB_DIR})
+# target_include_directories(${PROJECT_NAME} PRIVATE ${GFLAG_INCLUDE_DIR})
 
 
 
