@@ -52,6 +52,8 @@ private:
     int sum = 0;
 };
 
+auto func(int) -> int (*)[10];
+
 int main(int argc, char **argv)
 {
     std::set<int> sets;
