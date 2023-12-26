@@ -5,6 +5,7 @@
 #include <iostream>
 #include <list>
 #include <ostream>
+#include <forward_list>
 
 int main(int argc, char **argv)
 {
@@ -72,6 +73,20 @@ int main(int argc, char **argv)
     });
 
     e.sort();
+
+    // forward_list
+    std::forward_list<int> fl {1, 2, 3};
+    fl.push_front(0);
+
+    std::for_each(fl.begin(), fl.end(), [&](const int &item) { printf("%d ", item); });
+
+    std::cout << std::endl;
+    printf("fl size = %ld \n", std::distance(fl.begin(), fl.end()));
+
+    auto iter_begin = fl.begin();
+    std::advance(iter_begin, 2);
+
+    printf("advance fl it = %d \n", *iter_begin);
 
     system("pause");
     return 0;
