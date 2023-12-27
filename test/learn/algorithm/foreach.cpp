@@ -1,5 +1,7 @@
 
 // 遍历算法
+#include <algorithm>
+#include <cstdio>
 #include <vector>
 int main(int argc, char **argv)
 {
@@ -34,6 +36,13 @@ int main(int argc, char **argv)
     bool eq2 = std::equal(vc.begin(), vc.end(), vc2.begin(), [&](int &first, int &second) { return first < second; });
 
     printf("vc == vc2 %d \n", eq2);
+
+    std::fill(vc.begin(), vc.end(), 1);
+
+    std::for_each(vc.begin(), vc.end(), [&](int &item) { printf("%d ", item); });
+
+    std::generate(vc.begin(), vc.end(), [&]() -> int { return 2; });
+    std::for_each(vc.begin(), vc.end(), [&](int &item) { printf("%d ", item); });
 
     system("pause");
     return 0;
