@@ -31,11 +31,16 @@ class Worker {
 public:
     void test(Number &number)
     {
-        mutex.lock();  // 加锁，对临界代码多公共资源的存取进行保护
+        // RALL
+        // 用此语句替换了m.lock()；unique_lock传入一个参数时，该参数为互斥量，此时调用了unique_lock的构造函数，申请锁定mutex
+        std::unique_lock<std::mutex> ul(mutex);  //
         int num = number.getNum();
         std::cout << "This num is " << num << ". threadId = " << std::this_thread::get_id() << std::endl;
         number.setNum(++num);
-        mutex.unlock();
+        ul.unlock();  // 临时解锁
+        printf("end");
+        ul.lock();  // 重新加锁
+        // mutex.unlock(); // 此时不需要写mutex.unlock(),g1出了作用域被释放，自动调用析构函数，于是mutex被解锁
     }
 };
 int main()
