@@ -80,20 +80,27 @@ public:
     auto submit(F &&f, Args &&...args) -> std::future<decltype(f(args...))>
     {
         // Create a function with bounded parameters ready to execute
+        // 函数适配器 绑定实参到函数对象上，函数适配器是值传递，所以这里用 forward 完美转发
         std::function<decltype(f(args...))()> func = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
         // Encapsulate it into a shared ptr in order to be able to copy construct / assign
+        // 将函数包装为 packaged_task，用于异步执行并获取结果
+        // make_shared 动态分配内存，自动销毁
         auto task_ptr = std::make_shared<std::packaged_task<decltype(f(args...))()>>(func);
 
         // Wrap packaged task into void function
+        // 将 packaged_task 包装成一个函数
         std::function<void()> wrapper_func = [task_ptr]() { (*task_ptr)(); };
 
         // Enqueue generic wrapper function
+        // 入队
         m_queue.enqueue(wrapper_func);
 
         // Wake up one thread if its waiting
+        // 唤醒锁，并执行
         m_conditional_lock.notify_one();
 
         // Return future from promise
+        // 返回 future，共享状态
         return task_ptr->get_future();
     }
 };

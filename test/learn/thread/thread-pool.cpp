@@ -1,97 +1,58 @@
-#include <functional>
-#include <future>
-#include <mutex>
-#include <queue>
-#include <thread>
-#include <utility>
-#include <vector>
 
-// #include "SafeQueue.h"
+#include <iostream>
+#include <ostream>
+#include "thread_pool/ThreadPool.h"
+int main(int argc, char **argv)
+{
+    ThreadPool tp(5);
+    auto f = tp.submit(
+        [&](int i) {
+            std::cout << "thread id:" << std::this_thread::get_id() << ", i: " << i << std::endl;
+            return i;
+        },
+        1);
 
-class ThreadPool {
-private:
-    class ThreadWorker {
-    private:
-        int m_id;
-        ThreadPool *m_pool;
+    auto f1 = tp.submit(
+        [&](int i) {
+            std::cout << "thread id:" << std::this_thread::get_id() << ", i: " << i << std::endl;
+            return i;
+        },
+        2);
 
-    public:
-        ThreadWorker(ThreadPool *pool, const int id) : m_pool(pool), m_id(id) {}
+    auto f2 = tp.submit(
+        [&](int i) {
+            std::cout << "thread id:" << std::this_thread::get_id() << ", i: " << i << std::endl;
+            return i;
+        },
+        3);
 
-        void operator()()
-        {
-            std::function<void()> func;
-            bool dequeued;
-            while (!m_pool->m_shutdown) {
-                {
-                    std::unique_lock<std::mutex> lock(m_pool->m_conditional_mutex);
-                    if (m_pool->m_queue.empty()) {
-                        m_pool->m_conditional_lock.wait(lock);
-                    }
-                    dequeued = m_pool->m_queue.dequeue(func);
-                }
-                if (dequeued) {
-                    func();
-                }
-            }
-        }
-    };
+    auto f3 = tp.submit(
+        [&](int i) {
+            std::cout << "thread id:" << std::this_thread::get_id() << ", i: " << i << std::endl;
+            return i;
+        },
+        4);
 
-    bool m_shutdown;
-    SafeQueue<std::function<void()>> m_queue;
-    std::vector<std::thread> m_threads;
-    std::mutex m_conditional_mutex;
-    std::condition_variable m_conditional_lock;
+    tp.init();
 
-public:
-    ThreadPool(const int n_threads) : m_threads(std::vector<std::thread>(n_threads)), m_shutdown(false) {}
+    auto fr = f.get();
+    auto f1r = f1.get();
+    auto f2r = f2.get();
+    auto f3r = f3.get();
+    std::cout << "f: " << fr << ", f1: " << f1r << ", f2: " << f2r << ", f3: " << f3r << std::endl;
+    // f.get();
+    // f1.get();
+    // f2.get();
+    // f3.get();
+    tp.shutdown();
 
-    ThreadPool(const ThreadPool &) = delete;
-    ThreadPool(ThreadPool &&) = delete;
+    std::packaged_task<std::string(std::string)> task([&](std::string name) -> std::string { return name; });
+    auto result = task.get_future();
+    // task("");
+    std::thread th(std::move(task), "arg");  // 执行函数
 
-    ThreadPool &operator=(const ThreadPool &) = delete;
-    ThreadPool &operator=(ThreadPool &&) = delete;
-
-    // Inits thread pool
-    void init()
-    {
-        for (int i = 0; i < m_threads.size(); ++i) {
-            m_threads[i] = std::thread(ThreadWorker(this, i));
-        }
-    }
-
-    // Waits until threads finish their current task and shutdowns the pool
-    void shutdown()
-    {
-        m_shutdown = true;
-        m_conditional_lock.notify_all();
-
-        for (int i = 0; i < m_threads.size(); ++i) {
-            if (m_threads[i].joinable()) {
-                m_threads[i].join();
-            }
-        }
-    }
-
-    // Submit a function to be executed asynchronously by the pool
-    template <typename F, typename... Args>
-    auto submit(F &&f, Args &&...args) -> std::future<decltype(f(args...))>
-    {
-        // Create a function with bounded parameters ready to execute
-        std::function<decltype(f(args...))()> func = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
-        // Encapsulate it into a shared ptr in order to be able to copy construct / assign
-        auto task_ptr = std::make_shared<std::packaged_task<decltype(f(args...))()>>(func);
-
-        // Wrap packaged task into void function
-        std::function<void()> wrapper_func = [task_ptr]() { (*task_ptr)(); };
-
-        // Enqueue generic wrapper function
-        m_queue.enqueue(wrapper_func);
-
-        // Wake up one thread if its waiting
-        m_conditional_lock.notify_one();
-
-        // Return future from promise
-        return task_ptr->get_future();
-    }
-};
+    std::cout << "result: " << result.get() << std::endl;
+    th.join();  // 回收资源
+    system("pause");
+    return 0;
+}
