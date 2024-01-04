@@ -84,7 +84,7 @@ public:
         std::function<decltype(f(args...))()> func = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
         // Encapsulate it into a shared ptr in order to be able to copy construct / assign
         // 将函数包装为 packaged_task，用于异步执行并获取结果
-        // make_shared 动态分配内存，自动销毁
+        // make_shared 生成 shared_ptr 智能指针 动态分配内存，自动销毁
         auto task_ptr = std::make_shared<std::packaged_task<decltype(f(args...))()>>(func);
 
         // Wrap packaged task into void function
