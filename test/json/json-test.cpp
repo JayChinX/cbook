@@ -19,6 +19,10 @@ int main(int argc, char **argv)
         }
     }
 
+    const json11::Json json1 = json11::Json::object {
+        {"name", "q"}, {"list", json11::Json::array {1, 2, 3}}, {"age", true}, {"color", nullptr}};
+    std::cout << "json: " << json1.dump() << std::endl;
+
     system("pause");
     return 0;
 }
