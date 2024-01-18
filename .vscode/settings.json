@@ -109,68 +109,243 @@
     "--header-insertion=never",
     "--pch-storage=disk"
   ],
-  // 代码样式
+  // "editor.tokenColorCustomizations": {
+  //   "[Default Dark+]": {
+  //     "textMateRules": [
+  //       {
+  //         "scope": "keyword.control.directive",
+  //         "settings": {
+  //           "foreground": "#999999"
+  //         }
+  //       },
+  //       {
+  //         "scope": "meta.preprocessor",
+  //         "settings": {
+  //           "foreground": "#C8C8C8"
+  //         }
+  //       },
+  //       {
+  //         "scope": "entity.name.macro",
+  //         "settings": {
+  //           "foreground": "#BEB7FF"
+  //         }
+  //       },
+
+  //       // TEST
+  //       {
+  //         "scope": "entity.name.other.callable",
+  //         "settings": {
+  //           "foreground": "#DCDCAA"
+  //         }
+  //       }
+  //     ]
+  //   }
+  // },
+
   // "editor.semanticTokenColorCustomizations": {
-  //   "enabled": true,
-  //   "rules": {
-  //     "parameter": "#306b72",
-  //     "class": {
-  //       "fontStyle": "bold",
-  //       "foreground": "#729de3"
-  //     },
-  //     "type.fileScope": {
-  //       "fontStyle": "bold",
-  //       "foreground": "#729de3"
-  //     },
-  //     // for auto
-  //     "type": {
-  //       "fontStyle": "bold",
-  //       "foreground": "#729de3"
-  //     },
-  //     "function": {
-  //       "foreground": "#e5b124"
-  //     },
-  //     "typeParameter": {
-  //       "foreground": "#729de3",
-  //       "fontStyle": "italic bold"
-  //     },
-  //     "variable": "#26cdca",
-  //     "variable.static": {
-  //       "foreground": "#8f5daf",
-  //       "fontStyle": "bold"
-  //     },
-  //     "enum": {
-  //       "fontStyle": "bold",
-  //       "foreground": "#729de3"
-  //     },
-  //     "enumMember": "#397797",
-  //     "macro": {
-  //       "foreground": "#8f5daf",
-  //       "fontStyle": "bold"
-  //     },
-  //     "method": {
-  //       "foreground": "#e5b124",
-  //       "fontStyle": "underline"
-  //     },
-  //     // 只读量加粗
-  //     "*.readonly": {
-  //       "fontStyle": "bold"
-  //     },
-  //     // 只读量等效为宏
-  //     "*.fileScope": {
-  //       "foreground": "#8f5daf",
-  //       "fontStyle": "bold"
-  //     },
-  //     "comment": "#505050",
-  //     "namespace": {
-  //       "foreground": "#00d780",
-  //       "fontStyle": "bold"
-  //     },
-  //     "property": {
-  //       "foreground": "#7ca6b7",
-  //       "fontStyle": "underline"
+  //   "[Default Dark+]": {
+  //     "rules": {
+  //       // bold declaration
+  //       "type.declaration": {
+  //         "bold": true
+  //       },
+  //       "class.declaration": {
+  //         "bold": true
+  //       },
+  //       "function.declaration": {
+  //         "bold": true
+  //       },
+  //       "method.declaration": {
+  //         "bold": true
+  //       },
+
+  //       // a dedicated color for macro
+  //       "macro": "#BEB7FF",
+
+  //       // a dedicated color for global variables
+  //       "variable.globalScope": "#C8C8C8",
+
+  //       // italic parameters
+  //       "parameter": { "italic": true },
+  //       "typeParameter": { "italic": true },
+  //       "property": { "italic": true },
+
+  //       // color non-type template paramter as variable
+  //       "typeParameter.readonly": {
+  //         "foreground": "#9CDCFE"
+  //       },
+
+  //       // color deduced 'auto' consistently
+  //       "*.deduced": "#569CD6",
+
+  //       // color variable consistently
+  //       // don't color differently on readonly modifier because of a clangd bug (maybe a feature)
+  //       "variable.readonly.globalScope": "#C8C8C8",
+  //       "variable.readonly.fileScope": "#C8C8C8",
+  //       "property.readonly.classScope": "#9CDCFE",
+  //       "variable.readonly.classScope": "#C8C8C8",
+  //       "parameter.readonly.functionScope": "#9CDCFE",
+  //       "variable.readonly.functionScope": "#9CDCFE",
+  //       "variable.readonly.localScope": "#9CDCFE"
   //     }
   //   }
   // },
+  // 代码样式
+  "editor.semanticTokenColorCustomizations": {
+    // "enabled": true,
+    "rules": {
+      // "operator": {
+      //   // 关键字颜色
+      //   "foreground": "#C586C0"
+      // }
+      // "parameter": "#306b72"
+      //     "class": {
+      //       "fontStyle": "bold",
+      //       "foreground": "#729de3"
+      //     },
+      //     "type.fileScope": {
+      //       "fontStyle": "bold",
+      //       "foreground": "#729de3"
+      //     },
+      //     // for auto
+      //     "type": {
+      //       "fontStyle": "bold",
+      //       "foreground": "#729de3"
+      //     },
+      //     "function": {
+      //       "foreground": "#e5b124"
+      //     },
+      //     "typeParameter": {
+      //       "foreground": "#729de3",
+      //       "fontStyle": "italic bold"
+      //     },
+      //     "variable": "#26cdca",
+      //     "variable.static": {
+      //       "foreground": "#8f5daf",
+      //       "fontStyle": "bold"
+      //     },
+      //     "enum": {
+      //       "fontStyle": "bold",
+      //       "foreground": "#729de3"
+      //     },
+      //     "enumMember": "#397797",
+      //     "macro": {
+      //       "foreground": "#8f5daf",
+      //       "fontStyle": "bold"
+      //     },
+      //     "method": {
+      //       "foreground": "#e5b124",
+      //       "fontStyle": "underline"
+      //     },
+      //     // 只读量加粗
+      //     "*.readonly": {
+      //       "fontStyle": "bold"
+      //     },
+      //     // 只读量等效为宏
+      //     "*.fileScope": {
+      //       "foreground": "#8f5daf",
+      //       "fontStyle": "bold"
+      //     },
+      //     "comment": "#505050",
+      //     "namespace": {
+      //       "foreground": "#00d780",
+      //       "fontStyle": "bold"
+      //     },
+      //     "property": {
+      //       "foreground": "#7ca6b7",
+      //       "fontStyle": "underline"
+      //     }
+    }
+  },
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      // {
+      //   "scope": ["keyword.operator.delete", "keyword.operator.new"],
+      //   "settings": {
+      //     "foreground": "#1fd137"
+      //     // "fontStyle": "italic"
+      //   }
+      // }
+      //     {
+      //       "scope": [
+      //         "entity.name.function", // 函数
+      //         "keyword.operator.sizeof" // sizeof
+      //       ],
+      //       "settings": {
+      //         "foreground": "#1fd137",
+      //         "fontStyle": "italic"
+      //       }
+      //     },
+      //     {
+      //       "scope": [
+      //         "entity.name.type", // typedef 类型
+      //         "storage.type.built-in.primitive.c", //自带的类型
+      //         "storage.type" // struct关键字
+      //       ],
+      //       "settings": {
+      //         "foreground": "#3fccd1",
+      //         "fontStyle": "bold"
+      //       }
+      //     },
+      //     {
+      //       "scope": [
+      //         "variable.other.global" //全局变量
+      //       ],
+      //       "settings": {
+      //         "foreground": "#bd9924",
+      //         "fontStyle": "italic"
+      //       }
+      //     },
+      //     {
+      //       "scope": [
+      //         "entity.name.function.preprocessor" // 宏定义
+      //       ],
+      //       "settings": {
+      //         "foreground": "#971818",
+      //         "fontStyle": "italic bold"
+      //       }
+      //     },
+      //     {
+      //       "scope": [
+      //         "variable.other.local", // 局部变量
+      //         "variable.parameter" // 形参
+      //       ],
+      //       "settings": {
+      //         "foreground": "#00b7ff",
+      //         "fontStyle": "italic"
+      //       }
+      //     },
+      //     {
+      //       "scope": [
+      //         "variable.other.property" // 结构体的字段
+      //       ],
+      //       "settings": {
+      //         "foreground": "#1652c2",
+      //         "fontStyle": "bold"
+      //       }
+      //     },
+      //     {
+      //       "scope": [
+      //         // "keyword", // typedef
+      //         "keyword.control", // if, else, return
+      //         "storage.modifier" // const, static
+      //       ],
+      //       "settings": {
+      //         "foreground": "#ffff00",
+      //         "fontStyle": "italic"
+      //       }
+      //     },
+      //     {
+      //       "scope": [
+      //         "constant.numeric" // 数值
+      //       ],
+      //       "settings": {
+      //         "foreground": "#22daac",
+      //         "fontStyle": "italic"
+      //       }
+      //     }
+    ]
+  },
+
   "cmake.generator": "Unix Makefiles"
 }

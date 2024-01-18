@@ -51,6 +51,7 @@ add_subdirectory(test)
 # add_subdirectory(lib/googletest)
 # add_subdirectory(jnitest)
 add_subdirectory(common)
+add_subdirectory(lib/server)
 
 
 

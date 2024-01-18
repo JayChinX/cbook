@@ -18,6 +18,9 @@ file(GLOB_RECURSE COMMON_TEST_SRC common/*.cpp)
 add_executable(${COMMON_TEST} ${COMMON_TEST_SRC})
 add_test(NAME ${COMMON_TEST} COMMAND ${COMMON_TEST})
 
+
+add_subdirectory(server)
+
 target_include_directories(${COMMON_TEST} PUBLIC ${PROJECT_SOURCE_DIR}/common)
 
 target_link_libraries(${COMMON_TEST} PUBLIC common gtest gtest_main)
