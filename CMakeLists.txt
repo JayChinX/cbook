@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.11.0)
 project(books VERSION 0.1.0)
 # 制定C++版本 C++11
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_COLOR_MAKEFILE ON)
+# 第三方依赖脚本
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
+
+# 自定义参数/编译选项
+option(BUILD_TESTING "set ON to build library tests" OFF)
+
+
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # add_subdirectory(./src)
@@ -40,18 +48,24 @@ include(CPack)
 
 # target_link_libraries(${PROJECT_NAME} common)
 
-include(CTest)
-enable_testing()
+if(BUILD_TESTING)
+    include(CTest)
+    enable_testing()
+    include(googletest)
+    add_subdirectory(test)
+endif(BUILD_TESTING)
+
 
 # 将要进行测试的文件编译为静态库
-file(GLOB_RECURSE TEST_SRC src/book.cpp src/books.cpp)
-add_library(book_lib STATIC ${TEST_SRC})
+# file(GLOB_RECURSE TEST_SRC src/book.cpp src/books.cpp)
+# add_library(book_lib STATIC ${TEST_SRC})
 
-add_subdirectory(test)
+
 # add_subdirectory(lib/googletest)
 # add_subdirectory(jnitest)
 add_subdirectory(common)
 add_subdirectory(lib/server)
+add_subdirectory(server)
 
 
 
@@ -93,12 +107,11 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${EXTRA_LIBS})
 target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ${EXTRA_INCLUDES})
 
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 # include(spdlog)
 
 # target_link_libraries(test_spdlog ${SPDLOG_LIB})
 # target_include_directories(test_spdlog PRIVATE ${SPDLOG_INCLUDE_DIR})
-include(googletest)
+
 # target_link_libraries(test_spdlog PRIVATE spdlog)
 
 # include(gflag-2.2.2)

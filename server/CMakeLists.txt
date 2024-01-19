@@ -49,7 +49,11 @@ else()
     find_package(Boost 1.53.0 COMPONENTS system REQUIRED)
     target_link_libraries(${SERVER_TEST} INTERFACE Boost::boost Boost::system)
 
+    find_package(Boost 1.53.0 COMPONENTS thread REQUIRED)
+    target_link_libraries(${SERVER_TEST} INTERFACE  Boost::thread)
+
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
+        # 用于向target添加编译定义 用于 ”输出“宏定义 FUN_DEBUG 到 C 源码中 ，该语句是否执行由 CMakeLists.txt 中的 FUN_TRACE 决定
         target_compile_definitions(${SERVER_TEST} INTERFACE USE_BOOST_REGEX)
         find_package(Boost 1.53.0 COMPONENTS regex REQUIRED)
         target_link_libraries(${SERVER_TEST} INTERFACE Boost::regex)
@@ -98,8 +102,11 @@ if(Boost_FOUND)
     target_link_libraries(http_examples ${SERVER_TEST} Boost::boost Boost::filesystem)
     set_target_properties(http_examples PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON)
 
-    add_executable(asio_test asio_test.cpp)
-    target_link_libraries(asio_test ${SERVER_TEST} Boost::boost Boost::filesystem)
+    add_executable(asio_client_test asio_client_test.cpp)
+    target_link_libraries(asio_client_test ${SERVER_TEST} Boost::boost Boost::filesystem)
+
+    add_executable(asio_server_test asio_server_test.cpp)
+    target_link_libraries(asio_server_test ${SERVER_TEST} Boost::boost Boost::filesystem)
 
     if(OPENSSL_FOUND)
         add_executable(https_examples https_examples.cpp)
