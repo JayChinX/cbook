@@ -21,19 +21,26 @@ size_t read_complete(char *buff, const error_code &err, size_t bytes)
 }
 void handle_connections()
 {
-    ip::tcp::acceptor acceptor(service, ip::tcp::endpoint(ip::tcp::v4(), 8001));
+    // 端点
+    ip::tcp::endpoint ep(ip::tcp::v4(), 8001);
+
+    // 接收器，初始化协议和端口号，等待接入连接
+    ip::tcp::acceptor acceptor(service, ep);
+    // 写入缓冲区
     char buff[1024];
     while (true) {
         ip::tcp::socket sock(service);
+        // 阻塞等待接入
         acceptor.accept(sock);
+        // 有接入，同步读取
         int bytes = read(sock, buffer(buff), boost::bind(read_complete, buff, _1, _2));
 
         // 接收的消息
         std::string msg(buff, bytes);
-
+        // 返回字段
         std::string call("Server Call");
 
-        // 写入消息
+        // 同步写入消息
         sock.write_some(buffer(call.append(" ").append(msg)));
         // 关闭
         sock.close();
