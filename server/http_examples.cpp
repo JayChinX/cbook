@@ -1,6 +1,5 @@
 #include <future>
 
-#include "api/works.h"
 #include "client_http.hpp"
 #include "server_http.hpp"
 
@@ -10,6 +9,8 @@
 #include "api/jsons.h"
 #include "api/match.h"
 #include "api/strings.h"
+#include "api/login.h"
+#include "api/works.h"
 
 #include "utils/web_server_utility.h"
 
@@ -26,6 +27,7 @@ using HttpClient = SimpleWeb::Client<SimpleWeb::HTTP>;
 
 void router_api(HttpServer &server)
 {
+    login(server);
     strings(server);
     jsons(server);
     info(server);

@@ -19,4 +19,6 @@
 
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
+#define filename() __FILE__
+
 #endif  // __WEB_SERVER_UTILITY_H__

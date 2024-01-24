@@ -12,8 +12,8 @@ void strings(HttpServer &server)
         // ss << request->content.rdbuf();
         // auto content=ss.str();
 
-        *response << "HTTP/1.1 200 OK\r\nContent-Length: " << content.length() << "\r\n\r\n" << content;
-
+        // *response << "HTTP/1.1 200 OK\r\nContent-Length: " << content.length() << "\r\n\r\n" << content;
+        response->write(content);
         // Alternatively, use one of the convenience functions, for instance:
         // response->write(content);
     };
