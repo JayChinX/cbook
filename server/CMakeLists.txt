@@ -96,14 +96,15 @@ else()
 endif()
 
 find_package(Boost 1.53.0 COMPONENTS filesystem)
+find_package(Boost 1.75.0 COMPONENTS json)
 
 if(Boost_FOUND)
     file(GLOB_RECURSE WEB_SRC web/*.cpp)
     file(GLOB_RECURSE API_SRC api/*.cpp)
 
     add_executable(http_examples http_examples.cpp ${API_SRC} ${WEB_SRC})
-    target_link_libraries(http_examples ${SERVER_TEST} Boost::boost Boost::filesystem simple-web-server)
-    set_target_properties(http_examples PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON)
+    target_link_libraries(http_examples ${SERVER_TEST} Boost::boost Boost::filesystem Boost::json simple-web-server)
+    set_target_properties(http_examples PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
 
     # sync
     add_executable(asio_client_test asio_client_test.cpp)
@@ -122,7 +123,7 @@ if(Boost_FOUND)
     if(OPENSSL_FOUND)
         add_executable(https_examples https_examples.cpp)
         target_link_libraries(https_examples ${SERVER_TEST} Boost::boost Boost::filesystem)
-        set_target_properties(https_examples PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON)
+        set_target_properties(https_examples PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     endif()
 endif()
 
