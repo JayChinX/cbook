@@ -57,6 +57,7 @@ else()
     find_package(Boost 1.53.0 COMPONENTS system REQUIRED)
     target_link_libraries(simple-web-server INTERFACE Boost::boost Boost::system)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
+        # 注入宏变量
         target_compile_definitions(simple-web-server INTERFACE USE_BOOST_REGEX)
         find_package(Boost 1.53.0 COMPONENTS regex REQUIRED)
         target_link_libraries(simple-web-server INTERFACE Boost::regex)
