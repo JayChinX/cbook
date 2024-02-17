@@ -347,5 +347,6 @@
     ]
   },
 
-  "cmake.generator": "Unix Makefiles"
+  "cmake.generator": "Unix Makefiles",
+  // "cmake.useCMakePresets":"always"
 }
