@@ -30,10 +30,6 @@ add_executable(${PROJECT_NAME} ${SRC})
 # add_library(book SHARED ${SRC})
 # add_library(book SHARED main.cpp bookssm.cpp)
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME}) # 定义变量 CPACK_PROJECT_NAME = ${PROJECT_NAME}
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION}) # 定义变量 CPACK_PROJECT_VERSION = ${PROJECT_VERSION}
-include(CPack)
-
 # # 编译参数 debug/release
 # set(CMAKE_BUILD_TYPE "Debug")
 # # set(CMAKE_BUILD_TYPE Release)
@@ -82,14 +78,15 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 # target_link_libraries(a b)
 
 # 自定义编译选项
-option(USE_MYMATH "Use code provided math implementation" ON)
-# configure_file (Config.h.in Config.h)
+option(USE_MYMATH "Use code provided math implementation" OFF)
+# configure_file(Config.h.in Config.h)
 
 if (USE_MYMATH)
-    #add_definitions 为源码库编译添加一个宏
+    #add_definitions 为源码库编译添加一个
     # cmake .. -DUSE_MYMATH=OFF/0
     # 或者
     # cmake .. -DUSE_MYMATH=ON/1
+    message("Use code provided math implementation")
     add_definitions(-DUSE_MYMATH)
     add_subdirectory(features/mathfunctions)
     # 用list命令来在列表中保存需要连接的库和需要导入的头文件。cmake中的list时以;分割的字符串。
@@ -98,13 +95,30 @@ if (USE_MYMATH)
     # <list>为list的变量名，如果当前作用域中不存在这个变量名则作为空, list为其添加
     # [<element> ...]为list添加的元素
     # ps:也可以用set来创建list，例如：set(var a b c d) var的值为a;b;c;d;然后照样可以用list的命令来处理var
-    list(APPEND EXTRA_LIBS features/mathfunctions)
-    list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/features/mathfunctions")
+    # list(APPEND EXTRA_LIBS features/mathfunctions)
+    list(APPEND EXTRA_INCLUDES ${PROJECT_SOURCE_DIR}/features/mathfunctions)
+
+    target_link_libraries(${PROJECT_NAME} PUBLIC mathfunctions)
+
 endif()
 
-target_link_libraries(${PROJECT_NAME} PUBLIC ${EXTRA_LIBS})
 
-target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ${EXTRA_INCLUDES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDES})
+
+# 打包编译产物
+# install(TARGETS mathfunctions books
+#         RUNTIME DESTINATION bin
+#         LIBRARY DESTINATION lib
+#         ARCHIVE DESTINATION lib
+#         PUBLIC_HEADER DESTINATION include)
+
+# # mathfunctions 对应头文件
+# file(GLOB_RECURSE MATH_LIB_HEADERS features/mathfunctions/*.h)
+# install(FILES ${MATH_LIB_HEADERS} DESTINATION include/mathfunctions)
+
+set(CPACK_PROJECT_NAME ${PROJECT_NAME}) # 定义变量 CPACK_PROJECT_NAME = ${PROJECT_NAME}
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION}) # 定义变量 CPACK_PROJECT_VERSION = ${PROJECT_VERSION}
+include(CPack)
 
 
 # include(spdlog)

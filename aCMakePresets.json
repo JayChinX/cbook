@@ -1,0 +1,51 @@
+{
+    "version": 2,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 19,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "macos",
+            "hidden": true,
+            "generator": "Ninja",
+            "warnings": {
+                "dev": true,
+                "deprecated": true
+            },
+            "cacheVariables": {
+                "BUILD_TESTING": "OFF"
+            }
+        },
+        {
+            "name": "default",
+            "inherits": "macos",
+            "displayName": "Darwin 20.6+ (Debug)",
+            "description": "NetEase MSS C wrapper for macOS - Debug Configuration",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "BUILD_TESTING": "ON",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/darwin-debug"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "darwin-debug",
+            "configurePreset": "darwin-debug",
+            "displayName": "Darwin Local Compilation (Debug)",
+            "description": "NetEase MSS C wrapper for macOS - Debug Configuration",
+            "configuration": "Debug"
+        }
+    ],
+    "packagePresets": [
+        {
+            "name": "darwin-debug",
+            "description": "darwin",
+            "displayName": "darwin",
+            "configurePreset": "darwin-debug"
+        }
+    ]
+}
