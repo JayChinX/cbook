@@ -347,5 +347,9 @@
     ]
   },
 
-  "cmake.generator": "Unix Makefiles"
+  "cmake.generator": "Unix Makefiles",
+  "cmake.configureSettings": {
+    "CMAKE_TOOLCHAIN_FILE": "/Users/qin/vcpkg/scripts/buildsystems/vcpkg.cmake",
+    "VCPKG_TARGET_TRIPLET": "arm64-osx"
+  }
 }

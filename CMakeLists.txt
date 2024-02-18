@@ -63,9 +63,9 @@ endif(BUILD_TESTING)
 
 # add_subdirectory(lib/googletest)
 # add_subdirectory(jnitest)
-add_subdirectory(common)
+add_subdirectory(features/common)
 add_subdirectory(lib/server)
-add_subdirectory(server)
+add_subdirectory(features/server)
 
 
 
@@ -91,15 +91,15 @@ if (USE_MYMATH)
     # 或者
     # cmake .. -DUSE_MYMATH=ON/1
     add_definitions(-DUSE_MYMATH)
-    add_subdirectory(mathfunctions)
+    add_subdirectory(features/mathfunctions)
     # 用list命令来在列表中保存需要连接的库和需要导入的头文件。cmake中的list时以;分割的字符串。
     # list(APPEND <list> [<element> ...])
     # APPEND为修改命令，为list中添加元素。
     # <list>为list的变量名，如果当前作用域中不存在这个变量名则作为空, list为其添加
     # [<element> ...]为list添加的元素
     # ps:也可以用set来创建list，例如：set(var a b c d) var的值为a;b;c;d;然后照样可以用list的命令来处理var
-    list(APPEND EXTRA_LIBS mathfunctions)
-    list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/mathfunctions")
+    list(APPEND EXTRA_LIBS features/mathfunctions)
+    list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/features/mathfunctions")
 endif()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC ${EXTRA_LIBS})
