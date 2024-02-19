@@ -54,5 +54,30 @@
             "displayName": "default",
             "configurePreset": "default"
         }
+    ],
+    "workflowPresets": [
+        {
+            "name": "default",
+            "description": "",
+            "displayName": "",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "default"
+                },
+                {
+                    "type": "build",
+                    "name": "default"
+                },
+                {
+                    "type": "test",
+                    "name": "default"
+                },
+                {
+                    "type": "package",
+                    "name": "default"
+                }
+            ]
+        }
     ]
 }
