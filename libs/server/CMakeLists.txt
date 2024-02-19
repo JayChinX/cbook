@@ -7,6 +7,7 @@ option(USE_STANDALONE_ASIO "set ON to use standalone Asio instead of Boost.Asio"
 
 # 当前目录是否是 cmake的所在目录，打开测试
 if(CMAKE_SOURCE_DIR STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+    message("set ON to build library tests")
     option(BUILD_TESTING "set ON to build library tests" ON)
 else()
     option(BUILD_TESTING "set ON to build library tests" OFF)

@@ -1,20 +1,17 @@
 cmake_minimum_required(VERSION 3.11.0)
 project(books VERSION 0.1.0)
 # 制定C++版本 C++11
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_COLOR_MAKEFILE ON)
 # 第三方依赖脚本
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
 # 自定义参数/编译选项
-option(BUILD_TESTING "set ON to build library tests" OFF)
+option(BUILD_TESTING "set ON to build library tests" ON)
 
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
-
-# add_subdirectory(./src)
-
-# add_subdirectory(./test)
 
 # 定义变量 SRC = *.cpp + *.cpp
 # set(SRC src/main.cpp src/books.cpp)
@@ -44,13 +41,6 @@ add_executable(${PROJECT_NAME} ${SRC})
 
 # target_link_libraries(${PROJECT_NAME} common)
 
-if(BUILD_TESTING)
-    include(CTest)
-    enable_testing()
-    include(googletest)
-    add_subdirectory(test)
-endif(BUILD_TESTING)
-
 
 # 将要进行测试的文件编译为静态库
 # file(GLOB_RECURSE TEST_SRC src/book.cpp src/books.cpp)
@@ -60,10 +50,14 @@ endif(BUILD_TESTING)
 # add_subdirectory(lib/googletest)
 # add_subdirectory(jnitest)
 add_subdirectory(features/common)
-add_subdirectory(lib/server)
+add_subdirectory(libs/server)
 add_subdirectory(features/server)
 
-
+if(BUILD_TESTING)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(test)
+endif(BUILD_TESTING)
 
 # PROJECT_SOURCE_DIR/CMAKE_SOURCE_DIR/_SOURCE_DIR： 为包含PROJECT()命令的最近一个CMakeLists.txt文件所在的文件夹路径。
 # 输出可执行文件存放目录 PROJECT_BINARY_DIR 运行cmake命令的目录，即工程编译发生的路径

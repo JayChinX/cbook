@@ -6,9 +6,8 @@ file(GLOB_RECURSE TEST_SRC book/unittest.cpp)
 
 add_executable(${TEST} ${TEST_SRC})
 add_test(NAME ${TEST} COMMAND ${TEST})
-
-# book
-target_link_libraries(${TEST} PUBLIC book_lib gtest gtest_main)
+target_include_directories(${TEST} PUBLIC ${gtest_SOURCE_DIR}/include)
+target_link_libraries(${TEST} PUBLIC gtest gtest_main)
 
 # common
 set(COMMON_TEST common_test)
@@ -18,9 +17,15 @@ file(GLOB_RECURSE COMMON_TEST_SRC common/*.cpp)
 add_executable(${COMMON_TEST} ${COMMON_TEST_SRC})
 add_test(NAME ${COMMON_TEST} COMMAND ${COMMON_TEST})
 
-target_include_directories(${COMMON_TEST} PUBLIC ${PROJECT_SOURCE_DIR}/common)
-
+target_include_directories(${COMMON_TEST} PUBLIC ${PROJECT_SOURCE_DIR}/features/common ${gtest_SOURCE_DIR}/include)
 target_link_libraries(${COMMON_TEST} PUBLIC common gtest gtest_main)
+
+ # 这行代码用于包含Google Test框架的CMake模块。通过包含GoogleTest模块，可以使用Google Test提供的一些CMake函数和宏，用于配置和管理测试相关的任务。
+include(GoogleTest)
+# 设置包含目录，通常这不是必需的，因为 FetchContent_MakeAvailable 已经处理了  
+# 但如果您遇到问题，可以手动添加
+# target_include_directories(${COMMON_TEST} PUBLIC ${gtest_SOURCE_DIR}/include)
+
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)

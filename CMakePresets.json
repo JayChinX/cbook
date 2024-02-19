@@ -22,7 +22,7 @@
             "description": "NetEase MSS C wrapper for macOS - Debug Configuration",
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
-                "BUILD_TESTING": "OFF",
+                "BUILD_TESTING": "ON",
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
             }
