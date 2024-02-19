@@ -1,0 +1,58 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "macos",
+            "hidden": true,
+            "generator": "Unix Makefiles",
+            "warnings": {
+                "dev": true,
+                "deprecated": true
+            },
+            "cacheVariables": {
+                "BUILD_TESTING": "OFF",
+                "CMAKE_C_COMPILER": "/usr/bin/clang",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+            }
+        },
+        {
+            "name": "default",
+            "inherits": "macos",
+            "displayName": "Clang 14.0.0 arm64-apple-darwin22.1.0",
+            "description": "NetEase MSS C wrapper for macOS - Debug Configuration",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "BUILD_TESTING": "OFF",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        }
+    ],
+    "packagePresets": [
+        {
+            "name": "default",
+            "description": "default",
+            "displayName": "default",
+            "configurePreset": "default"
+        }
+    ]
+}

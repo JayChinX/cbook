@@ -106,11 +106,11 @@ endif()
 target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDES})
 
 # 打包编译产物
-# install(TARGETS mathfunctions books
-#         RUNTIME DESTINATION bin
-#         LIBRARY DESTINATION lib
-#         ARCHIVE DESTINATION lib
-#         PUBLIC_HEADER DESTINATION include)
+install(TARGETS books
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        PUBLIC_HEADER DESTINATION include)
 
 # # mathfunctions 对应头文件
 # file(GLOB_RECURSE MATH_LIB_HEADERS features/mathfunctions/*.h)
