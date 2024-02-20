@@ -31,6 +31,7 @@ void router_api(HttpServer &server)
     strings(server);
     jsons(server);
     json_obj(server);
+    json_rapid(server);
     info(server);
     match(server);
     works(server);

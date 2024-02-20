@@ -7,4 +7,6 @@ void jsons(HttpServer &server);
 
 void json_obj(HttpServer &server);
 
+void json_rapid(HttpServer &server);
+
 #endif  // __JSONS_H__

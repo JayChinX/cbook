@@ -97,13 +97,14 @@ endif()
 
 find_package(Boost 1.53.0 COMPONENTS filesystem)
 find_package(Boost 1.75.0 COMPONENTS json)
+find_package(RapidJSON CONFIG REQUIRED)
 
 if(Boost_FOUND)
     file(GLOB_RECURSE WEB_SRC web/*.cpp)
     file(GLOB_RECURSE API_SRC api/*.cpp)
 
     add_executable(http_examples http_examples.cpp ${API_SRC} ${WEB_SRC})
-    target_link_libraries(http_examples ${SERVER_TEST} Boost::boost Boost::filesystem Boost::json simple-web-server)
+    target_link_libraries(http_examples ${SERVER_TEST} Boost::boost Boost::filesystem Boost::json rapidjson simple-web-server)
     set_target_properties(http_examples PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
 
     # sync

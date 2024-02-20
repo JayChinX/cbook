@@ -2,7 +2,11 @@
 #include <utility>
 #include <boost/config/pragma_message.hpp>
 #include <boost/describe.hpp>
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
 #include "api/model/Person.h"
+#include "api/model/UserProfile.h"
 #include "jsons.h"
 
 using namespace std;
@@ -93,16 +97,17 @@ void json_obj(HttpServer &server)
             std::cout << "File content: " << content << std::endl;
 
             // 读取字段
-
-            auto data = boost::json::value_to<Person>(boost::json::parse(content));
+            Person person;
+            Person::FromJson(&person, content);
 
             // auto name = pt.get<string>("firstName") + " " + pt.get<string>("lastName");
 
             // auto res = s.str();
 
-            printf("data name  %s\n", data.data.name.c_str());
+            printf("data name  %s\n", person.data.name.c_str());
+            printf("data b  %d\n", person.b);
 
-            response->write(boost::json::serialize(boost::json::value_from(data)));
+            response->write(person.ToJson());
         } catch (const exception &e) {
             response->write(SimpleWeb::StatusCode::client_error_bad_request, e.what());
         }
@@ -123,5 +128,51 @@ void json_obj(HttpServer &server)
         //  // *response << "HTTP/1.1 400 Bad Request\r\nContent-Length: " << strlen(e.what()) << "\r\n\r\n" <<
         // e.what();
         // }
+    };
+}
+
+void json_rapid(HttpServer &server)
+{
+    server.resource["^/rapidjson$"]["GET"] = [](shared_ptr<HttpServer::Response> response,
+                                                shared_ptr<HttpServer::Request> request) {
+        try {
+            // ptree pt;
+
+            // json 解析
+            // read_json(request->content, pt);
+
+            // json 文件读取
+            auto path = boost::filesystem::path(filename()).parent_path().generic_string();
+            cout << "json01 path -> " << path << std::endl;
+
+            // 文件读取
+            boost::filesystem::ifstream file(path + "/../assets/json01.json");
+            std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+            std::cout << "File content: " << content << std::endl;
+
+            // 读取字段
+            // rapidjson::Document document;
+            // document.Parse(content.c_str());
+            UserProfile user;
+            UserProfile::FromJson(&user, content.c_str());
+
+            // auto name = pt.get<string>("firstName") + " " + pt.get<string>("lastName");
+
+            // auto res = s.str();
+
+            // printf("data name  %s\n", document["data"]["name"].GetString());
+            printf("data name  %s\n", user.name.name.c_str());
+
+            // rapidjson::StringBuffer buffer;
+            // rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+            // document.Accept(writer);
+
+            // response->write(buffer.GetString());
+
+            response->write(user.ToJson());
+        } catch (const exception &e) {
+            response->write(SimpleWeb::StatusCode::client_error_bad_request, e.what());
+        }
     };
 }

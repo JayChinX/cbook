@@ -26,6 +26,7 @@ include(GoogleTest)
 # 但如果您遇到问题，可以手动添加
 # target_include_directories(${COMMON_TEST} PUBLIC ${gtest_SOURCE_DIR}/include)
 
+# add_subdirectory(jnitest)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
