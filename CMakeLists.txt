@@ -51,7 +51,7 @@ add_executable(${PROJECT_NAME} ${SRC})
 # add_subdirectory(lib/googletest)
 # add_subdirectory(jnitest)
 add_subdirectory(features/common)
-add_subdirectory(libs/server)
+add_subdirectory(lib/server)
 add_subdirectory(features/server)
 
 if(BUILD_TESTING)
