@@ -53,7 +53,6 @@
     RapidJsonHelper::JsonArray<typename decltype(XXX)::value_type> values(XXX); \
     values.ToWrite(writer)
 
-
 // 反序列化
 // 开始 遍历 value
 #define RapidjsonParseBegin(val) \
