@@ -37,6 +37,7 @@ public:
     char book[100];
     int age;
     double money;
+    std::list<UserName> formers;
     UserProfile();
     UserProfile(UserName name, int age = 0, double money = 0);
     ~UserProfile() {}
@@ -49,6 +50,7 @@ public:
         RapidjsonWriteInt(age);
         RapidjsonWriteDouble(money);
         RapidjsonWriteClass(name);
+        RapidjsonWriteArray(formers);
         RapidjsonWriteEnd();
     }
 
@@ -60,6 +62,7 @@ public:
         RapidjsonParseToInt(age);
         RapidjsonParseToDouble(money);
         RapidjsonParseToClass(name);
+        RapidjsonParseToArray(formers);
         RapidjsonParseEnd();
     }
 };

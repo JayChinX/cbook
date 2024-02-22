@@ -1,8 +1,8 @@
 #include "Person.h"
 
-Person::Person() : data(Name()), b(0) {}
+Person::Person() : name(Name()), age(0) {}
 
-Person::Person(Name data, int b) : data(data), b(b) {}
+Person::Person(Name data, int age) : name(data), age(age) {}
 
 // 定义序列化和反序列化特化函数
 void Person::ParseJson(const std::string &json)
@@ -19,15 +19,15 @@ std::string Person::toWrite()
 Person tag_invoke(boost::json::value_to_tag<Person>, boost::json::value const &jv)
 {
     auto &jo = jv.as_object();
-    return {boost::json::value_to<Name>(jo.at("data")),
-            jo.if_contains("b") ? static_cast<int>(jo.at("b").as_int64()) : 0};
+    return {boost::json::value_to<Name>(jo.at("name")),
+            jo.if_contains("age") ? static_cast<int>(jo.at("age").as_int64()) : 0};
 }
 
 void tag_invoke(boost::json::value_from_tag, boost::json::value &jv, Person const &c)
 {
     auto &jo = jv.emplace_object();
-    jo["data"] = boost::json::value_from(c.data);
-    jo["b"] = c.b;
+    jo["name"] = boost::json::value_from(c.name);
+    jo["age"] = c.age;
 }
 
 // Name

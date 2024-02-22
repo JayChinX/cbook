@@ -108,18 +108,18 @@ if(Boost_FOUND)
     set_target_properties(http_examples PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
 
     # sync
-    add_executable(asio_client_test asio_client_test.cpp)
-    target_link_libraries(asio_client_test ${SERVER_TEST} Boost::boost Boost::filesystem)
+    # add_executable(asio_client_test asio_client_test.cpp)
+    # target_link_libraries(asio_client_test ${SERVER_TEST} Boost::boost Boost::filesystem)
 
-    add_executable(asio_server_test asio_server_test.cpp)
-    target_link_libraries(asio_server_test ${SERVER_TEST} Boost::boost Boost::filesystem)
+    # add_executable(asio_server_test asio_server_test.cpp)
+    # target_link_libraries(asio_server_test ${SERVER_TEST} Boost::boost Boost::filesystem)
 
-    # async
-    add_executable(asio_client_async asio_client_async.cpp)
-    target_link_libraries(asio_client_async ${SERVER_TEST} Boost::boost Boost::filesystem)
+    # # async
+    # add_executable(asio_client_async asio_client_async.cpp)
+    # target_link_libraries(asio_client_async ${SERVER_TEST} Boost::boost Boost::filesystem)
 
-    add_executable(asio_server_async asio_server_async.cpp)
-    target_link_libraries(asio_server_async ${SERVER_TEST} Boost::boost Boost::filesystem)
+    # add_executable(asio_server_async asio_server_async.cpp)
+    # target_link_libraries(asio_server_async ${SERVER_TEST} Boost::boost Boost::filesystem)
 
     if(OPENSSL_FOUND)
         add_executable(https_examples https_examples.cpp)

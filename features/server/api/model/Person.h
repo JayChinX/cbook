@@ -19,10 +19,10 @@ public:
 
 class Person : public JsonBase {
 public:
-    Name data;
-    int b;
+    Name name;
+    int age;
     Person();
-    Person(Name data, int b = 1);
+    Person(Name name, int age = 1);
     ~Person() {}
 
     void ParseJson(const std::string &json) override;

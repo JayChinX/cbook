@@ -2,9 +2,6 @@
 #include <utility>
 #include <boost/config/pragma_message.hpp>
 #include <boost/describe.hpp>
-#include <rapidjson/document.h>
-#include <rapidjson/writer.h>
-#include <rapidjson/stringbuffer.h>
 #include "api/model/Person.h"
 #include "api/model/UserProfile.h"
 #include "jsons.h"
@@ -28,7 +25,7 @@ void jsons(HttpServer &server)
         try {
             // ptree pt;
 
-            // json 解析
+            // json 解析 使用 #include <boost/property_tree/ptree.hpp> 解析 json
             // read_json(request->content, pt);
             ptree pt_json;
 
@@ -42,7 +39,7 @@ void jsons(HttpServer &server)
             string test = pt_json.get<string>("data.test");
             cout << "json01 -> " << test << std::endl;
 
-            // 写入 stringstream 中，转为 json string
+            // 写入 stringstream 中，转为 json string 
             stringstream s;
             write_json(s, pt_json, false);
 
@@ -96,7 +93,7 @@ void json_obj(HttpServer &server)
 
             std::cout << "File content: " << content << std::endl;
 
-            // 读取字段
+            // 读取字段 使用 #include <boost/json.hpp> 解析 json
             Person person;
             Person::FromJson(&person, content);
 
@@ -104,10 +101,10 @@ void json_obj(HttpServer &server)
 
             // auto res = s.str();
 
-            printf("data name  %s\n", person.data.name.c_str());
-            printf("data b  %d\n", person.b);
+            printf("data name  %s\n", person.name.name.c_str());
+            printf("data age  %d\n", person.age);
 
-            response->write(person.ToJson());
+            response->write(person.ToJson(), {{"Content-Type", "text/html;charset=utf-8"}});
         } catch (const exception &e) {
             response->write(SimpleWeb::StatusCode::client_error_bad_request, e.what());
         }
@@ -151,18 +148,19 @@ void json_rapid(HttpServer &server)
 
             std::cout << "File content: " << content << std::endl;
 
-            // 读取字段
+            // 读取字段 使用 rapidjson 解析 json
             // rapidjson::Document document;
             // document.Parse(content.c_str());
             UserProfile user;
             UserProfile::FromJson(&user, content.c_str());
 
-            // auto name = pt.get<string>("firstName") + " " + pt.get<string>("lastName");
-
-            // auto res = s.str();
-
             // printf("data name  %s\n", document["data"]["name"].GetString());
             printf("data name  %s\n", user.name.name.c_str());
+            printf("data age  %d\n", user.age);
+
+            for (auto &name : user.formers) {
+                printf("data name  %s\n", name.name.c_str());
+            }
 
             // rapidjson::StringBuffer buffer;
             // rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -170,7 +168,7 @@ void json_rapid(HttpServer &server)
 
             // response->write(buffer.GetString());
 
-            response->write(user.ToJson());
+            response->write(user.ToJson(), {{"Content-Type", "text/html;charset=utf-8"}});
         } catch (const exception &e) {
             response->write(SimpleWeb::StatusCode::client_error_bad_request, e.what());
         }
