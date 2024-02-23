@@ -10,13 +10,16 @@
                 "deprecated": true,
                 "unusedCli": false
             },
-            "toolchainFile": "/Users/qin/vcpkg/scripts/buildsystems/vcpkg.cmake",
             "cacheVariables": {
                 "BUILD_TESTING": "OFF",
                 "CMAKE_C_COMPILER": "/usr/bin/clang",
                 "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
                 "VCPKG_TARGET_TRIPLET": "arm64-osx",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true
+            },
+            "environment": {
+                "VCPKG_ROOT": "/Users/qin/vcpkg"
             }
         },
         {
