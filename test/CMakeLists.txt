@@ -28,6 +28,12 @@ include(GoogleTest)
 
 # add_subdirectory(jnitest)
 
+# fuzz
+# add_executable(request_message_parse fuzzers/request_message_parse.cpp)
+# target_compile_options(request_message_parse PRIVATE -fsanitize=address,fuzzer)
+# target_link_libraries(request_message_parse simple-web-server -fsanitize=address,fuzzer)
+# set_target_properties(request_message_parse PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON)
+
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 

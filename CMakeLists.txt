@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.11.0)
 project(books VERSION 0.1.0)
+
 # 制定C++版本 C++11
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,12 +12,15 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 # 自定义参数/编译选项
 option(BUILD_TESTING "set ON to build library tests" ON)
 
+# Fuzz测试 模糊测试
+option(BUILD_FUZZING "set ON to build library fuzzers" OFF)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # 定义变量 SRC = *.cpp + *.cpp
 # set(SRC src/main.cpp src/books.cpp)
 file(GLOB_RECURSE SRC src/*.cpp)
+
 # 生成可执行文件 + 多文件打包
 add_executable(${PROJECT_NAME} ${SRC})
 
@@ -33,20 +37,17 @@ add_executable(${PROJECT_NAME} ${SRC})
 # # set(CMAKE_BUILD_TYPE Release)
 
 # if (NOT CMAKE_BUILD_TYPE)
-#     set(CMAKE_BUILD_TYPE Release)
-#     message("Setting default build type to Release")
+# set(CMAKE_BUILD_TYPE Release)
+# message("Setting default build type to Release")
 # endif()
-
 
 # target_include_directories(${PROJECT_NAME} PUBLIC common)
 
 # target_link_libraries(${PROJECT_NAME} common)
 
-
 # 将要进行测试的文件编译为静态库
 # file(GLOB_RECURSE TEST_SRC src/book.cpp src/books.cpp)
 # add_library(book_lib STATIC ${TEST_SRC})
-
 
 # add_subdirectory(lib/googletest)
 # add_subdirectory(jnitest)
@@ -54,15 +55,18 @@ add_subdirectory(features/common)
 add_subdirectory(lib/server)
 add_subdirectory(features/server)
 
-if(BUILD_TESTING)
-    include(CTest)
-    enable_testing()
+if(BUILD_TESTING OR BUILD_FUZZING)
+    if(BUILD_TESTING)
+        include(CTest)
+        enable_testing()
+    endif()
     add_subdirectory(test)
-endif(BUILD_TESTING)
+endif()
 
 # PROJECT_SOURCE_DIR/CMAKE_SOURCE_DIR/_SOURCE_DIR： 为包含PROJECT()命令的最近一个CMakeLists.txt文件所在的文件夹路径。
 # 输出可执行文件存放目录 PROJECT_BINARY_DIR 运行cmake命令的目录，即工程编译发生的路径
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+
 # 输出可动态库文件存放目录
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
@@ -74,16 +78,17 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # 自定义编译选项
 option(USE_MYMATH "Use code provided math implementation" OFF)
-# configure_file(Config.h.in Config.h)
 
-if (USE_MYMATH)
-    #add_definitions 为源码库编译添加一个
+# configure_file(Config.h.in Config.h)
+if(USE_MYMATH)
+    # add_definitions 为源码库编译添加一个
     # cmake .. -DUSE_MYMATH=OFF/0
     # 或者
     # cmake .. -DUSE_MYMATH=ON/1
     message("Use code provided math implementation")
     add_definitions(-DUSE_MYMATH)
     add_subdirectory(features/mathfunctions)
+
     # 用list命令来在列表中保存需要连接的库和需要导入的头文件。cmake中的list时以;分割的字符串。
     # list(APPEND <list> [<element> ...])
     # APPEND为修改命令，为list中添加元素。
@@ -94,27 +99,23 @@ if (USE_MYMATH)
     list(APPEND EXTRA_INCLUDES ${PROJECT_SOURCE_DIR}/features/mathfunctions)
 
     target_link_libraries(${PROJECT_NAME} PUBLIC mathfunctions)
-
 endif()
-
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDES})
 
 # 打包编译产物
 install(TARGETS books
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        PUBLIC_HEADER DESTINATION include)
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    PUBLIC_HEADER DESTINATION include)
 
 # # mathfunctions 对应头文件
 # file(GLOB_RECURSE MATH_LIB_HEADERS features/mathfunctions/*.h)
 # install(FILES ${MATH_LIB_HEADERS} DESTINATION include/mathfunctions)
-
 set(CPACK_PROJECT_NAME ${PROJECT_NAME}) # 定义变量 CPACK_PROJECT_NAME = ${PROJECT_NAME}
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION}) # 定义变量 CPACK_PROJECT_VERSION = ${PROJECT_VERSION}
 include(CPack)
-
 
 # include(spdlog)
 
@@ -129,10 +130,8 @@ include(CPack)
 
 # Configure CCache if available
 find_program(CCACHE_FOUND ccache)
+
 if(CCACHE_FOUND)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache) # Less useful to do it for linking, see edit2
 endif(CCACHE_FOUND)
-
-
-
