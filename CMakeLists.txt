@@ -7,7 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_COLOR_MAKEFILE ON)
 
 # 第三方依赖脚本
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
+# set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+# list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # 自定义参数/编译选项
 option(BUILD_TESTING "set ON to build library tests" ON)

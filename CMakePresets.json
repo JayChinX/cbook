@@ -16,7 +16,8 @@
                 "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
                 "VCPKG_TARGET_TRIPLET": "arm64-osx",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+                "CMAKE_MODULE_PATH": "${sourceDir}/cmake"
             },
             "environment": {
                 "VCPKG_ROOT": "/Users/qin/vcpkg"
@@ -33,18 +34,68 @@
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
             }
+        },
+        {
+            "name": "linux",
+            "hidden": true,
+            "generator": "Unix Makefiles",
+            "warnings": {
+                "dev": true,
+                "deprecated": true,
+                "unusedCli": false
+            },
+            "cacheVariables": {
+                "BUILD_TESTING": "OFF",
+                "CMAKE_C_COMPILER": "/usr/sbin/clang",
+                "CMAKE_CXX_COMPILER": "/usr/sbin/clang++",
+                "CMAKE_MODULE_PATH": "${sourceDir}/cmake/",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_TARGET_TRIPLET": "x64-linux",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true
+            },
+            "environment": {
+                "VCPKG_ROOT": "/home/qin/vcpkg"
+            }
+        },
+        {
+            "name": "linux-default",
+            "inherits": "linux",
+            "displayName": "Clang 16.0.6 x86_64-pc-linux-gnu",
+            "description": "使用编译器: C = /usr/sbin/clang, CXX = /usr/sbin/clang++",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "BUILD_TESTING": "ON",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+            }
+           
         }
     ],
     "buildPresets": [
         {
             "name": "default",
             "configurePreset": "default"
+        },
+        {
+            "name": "linux-default",
+            "configurePreset": "linux-default"
         }
     ],
     "testPresets": [
         {
             "name": "default",
             "configurePreset": "default",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        },
+        {
+            "name": "linux-default",
+            "configurePreset": "linux-default",
             "output": {
                 "outputOnFailure": true
             },
@@ -60,6 +111,12 @@
             "description": "default",
             "displayName": "default",
             "configurePreset": "default"
+        },
+        {
+            "name": "linux-default",
+            "description": "linux-default",
+            "displayName": "linux-default",
+            "configurePreset": "linux-default"
         }
     ],
     "workflowPresets": [
@@ -83,6 +140,29 @@
                 {
                     "type": "package",
                     "name": "default"
+                }
+            ]
+        },
+        {
+            "name": "linux-default",
+            "description": "",
+            "displayName": "",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux-default"
+                },
+                {
+                    "type": "build",
+                    "name": "linux-default"
+                },
+                {
+                    "type": "test",
+                    "name": "linux-default"
+                },
+                {
+                    "type": "package",
+                    "name": "linux-default"
                 }
             ]
         }
