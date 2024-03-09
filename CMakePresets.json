@@ -87,7 +87,6 @@
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "CMAKE_MODULE_PATH": "${sourceDir}/cmake",
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_MAKE_PROGRAM": "/usr/bin/make",
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
                 "VCPKG_TARGET_TRIPLET": "x64-osx",
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
