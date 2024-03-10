@@ -15,7 +15,6 @@
                 "CMAKE_C_COMPILER": "/usr/bin/clang",
                 "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_TARGET_TRIPLET": "arm64-osx",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "CMAKE_MODULE_PATH": "${sourceDir}/cmake"
             },
@@ -24,7 +23,7 @@
             }
         },
         {
-            "name": "default",
+            "name": "arm64-apple-darwin",
             "inherits": "macos",
             "displayName": "Clang 14.0.0 arm64-apple-darwin22.1.0",
             "description": "NetEase MSS C wrapper for macOS - Debug Configuration",
@@ -32,6 +31,7 @@
             "cacheVariables": {
                 "BUILD_TESTING": "ON",
                 "CMAKE_BUILD_TYPE": "Debug",
+                "VCPKG_TARGET_TRIPLET": "arm64-osx",
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
             }
         },
@@ -71,25 +71,14 @@
         },
         {
             "name": "x86_64-apple-darwin",
+            "inherits": "macos",
             "displayName": "Clang 14.0.0 x86_64-apple-darwin21.6.0",
             "description": "使用编译器: C = /usr/bin/clang, CXX = /usr/bin/clang++",
-            "generator": "Unix Makefiles",
             "binaryDir": "${sourceDir}/build",
-            "warnings": {
-                "dev": true,
-                "deprecated": true,
-                "unusedCli": false
-            },
             "cacheVariables": {
                 "BUILD_TESTING": "ON",
-                "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-                "CMAKE_MODULE_PATH": "${sourceDir}/cmake",
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-                "VCPKG_TARGET_TRIPLET": "x64-osx",
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+                "VCPKG_TARGET_TRIPLET": "x64-osx"
             },
             "environment": {
                 "VCPKG_ROOT": "/Users/qin/vcpkg"
@@ -98,8 +87,8 @@
     ],
     "buildPresets": [
         {
-            "name": "default",
-            "configurePreset": "default"
+            "name": "arm64-apple-darwin",
+            "configurePreset": "arm64-apple-darwin"
         },
         {
             "name": "linux-default",
@@ -112,8 +101,8 @@
     ],
     "testPresets": [
         {
-            "name": "default",
-            "configurePreset": "default",
+            "name": "arm64-apple-darwin",
+            "configurePreset": "arm64-apple-darwin",
             "output": {
                 "outputOnFailure": true
             },
@@ -147,10 +136,10 @@
     ],
     "packagePresets": [
         {
-            "name": "default",
-            "description": "default",
-            "displayName": "default",
-            "configurePreset": "default"
+            "name": "arm64-apple-darwin",
+            "description": "arm64-apple-darwin",
+            "displayName": "arm64-apple-darwin",
+            "configurePreset": "arm64-apple-darwin"
         },
         {
             "name": "linux-default",
@@ -167,25 +156,25 @@
     ],
     "workflowPresets": [
         {
-            "name": "default",
+            "name": "arm64-apple-darwin",
             "description": "",
             "displayName": "",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "default"
+                    "name": "arm64-apple-darwin"
                 },
                 {
                     "type": "build",
-                    "name": "default"
+                    "name": "arm64-apple-darwin"
                 },
                 {
                     "type": "test",
-                    "name": "default"
+                    "name": "arm64-apple-darwin"
                 },
                 {
                     "type": "package",
-                    "name": "default"
+                    "name": "arm64-apple-darwin"
                 }
             ]
         },
