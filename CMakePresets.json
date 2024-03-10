@@ -16,7 +16,8 @@
                 "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-                "CMAKE_MODULE_PATH": "${sourceDir}/cmake"
+                "CMAKE_MODULE_PATH": "${sourceDir}/cmake",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
             },
             "environment": {
                 "VCPKG_ROOT": "/Users/qin/vcpkg"
@@ -31,8 +32,7 @@
             "cacheVariables": {
                 "BUILD_TESTING": "ON",
                 "CMAKE_BUILD_TYPE": "Debug",
-                "VCPKG_TARGET_TRIPLET": "arm64-osx",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+                "VCPKG_TARGET_TRIPLET": "arm64-osx"
             }
         },
         {
