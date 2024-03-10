@@ -18,15 +18,17 @@ rm -rf "${BUILD_DIR}"
 #     -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
 #     -DCPACK_OUTPUT_FILE_PREFIX="${INSTALL_DIR}"
 
-# 配合 cmakepresets.json
 # cmake -B "${BUILD_DIR}" 生成 makefile 文件等信息到 BUILD_DIR 文件夹，如 build 文件夹
-cmake -B "${BUILD_DIR}"
+# cmake -B "${BUILD_DIR}"
+
+# 配合 cmakepresets.json
+cmake  --preset=x86_64-apple-darwin
 
 # Build 开始编译命令
 # cmake --build "${BUILD_DIR}"
 
 # 配合 cmakepresets.json
-cmake --build --preset=default
+cmake  --build --preset=x86_64-apple-darwin
 
 cd "${BUILD_DIR}"
 
@@ -36,11 +38,12 @@ cd "${BUILD_DIR}"
 
 # Install 打包命令 安装到本地
 # cmake --build . --target install
-# cmake --install . --prefix "../output" # After cmake 3.15
+cmake --install . --prefix "../output" # After cmake 3.15
 # make install
 
 # Package 开始打包
-# cmake --build . --target package
-make package
+cmake --build . --target package
+# cmake --build . --target package_source
+# make package
 
 cd -

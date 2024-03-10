@@ -20,6 +20,7 @@ int main(int, char **)
     std::cout << "mySquare func called!" << std::endl;
 #else
     double outputValue = pow(inputValue, 2);
+    
     std::cout << "pow func called!" << std::endl;
 #endif
     std::cout << "result: " << outputValue << std::endl;
