@@ -114,6 +114,46 @@ install(TARGETS books common simple-web-server http_examples
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include
     FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
 
+# 打包依赖
+install(CODE [[
+file(GET_RUNTIME_DEPENDENCIES
+    RESOLVED_DEPENDENCIES_VAR RESOLVED_DEPS
+    UNRESOLVED_DEPENDENCIES_VAR UNRESOLVED_DEPS
+    EXECUTABLES "features/server/http_examples"
+    # LIBRARIES "lib/server/simple-web-server"
+    # DIRECTORIES $<TARGET_FILE_DIR:books>
+    # PRE_INCLUDE_REGEXES $<TARGET_FILE_DIR:books>
+    # PRE_EXCLUDE_REGEXES "system32"
+    # POST_INCLUDE_REGEXES $<TARGET_FILE_DIR:books>
+    # POST_EXCLUDE_REGEXES "system32"
+)
+foreach(DEP_LIB ${RESOLVED_DEPS})
+    file(INSTALL ${DEP_LIB} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+endforeach()
+]])
+
+# install(CODE [[
+#   file(GET_RUNTIME_DEPENDENCIES
+#     LIBRARIES $<TARGET_FILE:simple-web-server>
+#     EXECUTABLES $<TARGET_FILE:http_examples>
+#     RESOLVED_DEPENDENCIES_VAR _r_deps
+#     UNRESOLVED_DEPENDENCIES_VAR _u_deps
+#     DIRECTORIES ${MY_DEPENDENCY_PATHS}
+#   )
+#   foreach(_file ${_r_deps})
+#     file(INSTALL
+#       DESTINATION "${CMAKE_INSTALL_PREFIX}/lib"
+#       TYPE SHARED_LIBRARY
+#       FOLLLOW_SYMLINK_CHAIN
+#       FILES "${_file}"
+#     )
+#   endforeach()
+#   list(LENGTH _u_deps _u_length)
+#   if("${_u_length}" GREATER 0)
+#     message(WARNING "Unresolved dependencies detected!")
+#   endif()
+# ]])
+
 # # mathfunctions 对应头文件
 # file(GLOB_RECURSE MATH_LIB_HEADERS features/mathfunctions/*.h)
 # install(FILES ${MATH_LIB_HEADERS} DESTINATION include/mathfunctions)
