@@ -7,6 +7,31 @@
 #  -o pipefail选项 在管道中某个命令出错时立即报错返回
 set -euf -o pipefail
 
+ARCH=`uname -m`
+preset='x86_64-apple-darwin'
+
+case $(uname | tr '[:upper:]' '[:lower:]') in
+  linux*)
+    echo "system is linux"
+    preset='linux-default'
+    ;;
+  darwin*)
+    if [[ $ARCH =~ 'arm64' ]];then
+        echo "system is arm64_osx"
+        preset='arm64-apple-darwin'
+    else
+        echo "system is x64_osx"
+        preset='x86_64-apple-darwin'
+    fi
+    ;;
+  msys*)
+    echo "system is windows"
+    ;;
+  *)
+    export TRAVIS_OS_NAME=notset
+    ;;
+esac
+
 BUILD_DIR="build"
 INSTALL_DIR=$(pwd)/output
 rm -rf "${BUILD_DIR}"
@@ -22,13 +47,13 @@ rm -rf "${BUILD_DIR}"
 # cmake -B "${BUILD_DIR}"
 
 # 配合 cmakepresets.json
-cmake  --preset=x86_64-apple-darwin
+cmake  --preset=${preset}
 
 # Build 开始编译命令
 # cmake --build "${BUILD_DIR}"
 
 # 配合 cmakepresets.json
-cmake  --build --preset=x86_64-apple-darwin
+cmake  --build --preset=${preset}
 
 cd "${BUILD_DIR}"
 
