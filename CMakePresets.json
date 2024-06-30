@@ -27,7 +27,7 @@
       "name": "arm64-apple-darwin",
       "inherits": "macos",
       "displayName": "Clang 14.0.0 arm64-apple-darwin22.1.0",
-      "description": "NetEase MSS C wrapper for macOS - Debug Configuration",
+      "description": "MacOS arm64 - Debug Configuration",
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "BUILD_TESTING": "ON",
@@ -39,7 +39,7 @@
       "name": "x86_64-apple-darwin",
       "inherits": "macos",
       "displayName": "Clang 14.0.0 x86_64-apple-darwin21.6.0",
-      "description": "使用编译器: C = /usr/bin/clang, CXX = /usr/bin/clang++",
+      "description": "MacOS x86_64 - Debug Configuration",
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "BUILD_TESTING": "ON",
@@ -76,7 +76,7 @@
       "name": "linux-default",
       "inherits": "linux",
       "displayName": "Clang 16.0.6 x86_64-pc-linux-gnu",
-      "description": "使用编译器: C = /usr/sbin/clang, CXX = /usr/sbin/clang++",
+      "description": "Linux x86_64 - Debug Configuration",
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "BUILD_TESTING": "ON",
@@ -88,32 +88,25 @@
   "buildPresets": [
     {
       "name": "arm64-apple-darwin",
-      "configurePreset": "arm64-apple-darwin"
-    },
-    {
-      "name": "linux-default",
-      "configurePreset": "linux-default"
+      "configurePreset": "arm64-apple-darwin",
+      "displayName": "MacOS arm64 build"
     },
     {
       "name": "x86_64-apple-darwin",
-      "configurePreset": "x86_64-apple-darwin"
+      "configurePreset": "x86_64-apple-darwin",
+      "displayName": "MacOS x86_64 build"
+    },
+    {
+      "name": "linux-default",
+      "configurePreset": "linux-default",
+      "displayName": "Linux build"
     }
   ],
   "testPresets": [
     {
       "name": "arm64-apple-darwin",
       "configurePreset": "arm64-apple-darwin",
-      "output": {
-        "outputOnFailure": true
-      },
-      "execution": {
-        "noTestsAction": "error",
-        "stopOnFailure": true
-      }
-    },
-    {
-      "name": "linux-default",
-      "configurePreset": "linux-default",
+      "displayName": "MacOS arm64 test",
       "output": {
         "outputOnFailure": true
       },
@@ -125,6 +118,19 @@
     {
       "name": "x86_64-apple-darwin",
       "configurePreset": "x86_64-apple-darwin",
+      "displayName": "MacOS x86_64 test",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    },
+    {
+      "name": "linux-default",
+      "configurePreset": "linux-default",
+      "displayName": "Linux test",
       "output": {
         "outputOnFailure": true
       },
@@ -137,28 +143,28 @@
   "packagePresets": [
     {
       "name": "arm64-apple-darwin",
-      "description": "arm64-apple-darwin",
-      "displayName": "arm64-apple-darwin",
+      "description": "MacOS arm64 pkg",
+      "displayName": "MacOS arm64 pkg",
       "configurePreset": "arm64-apple-darwin"
+    },
+    {
+      "name": "x86_64-apple-darwin",
+      "description": "MacOS x86_64 pkg",
+      "displayName": "MacOS x86_64 pkg",
+      "configurePreset": "x86_64-apple-darwin"
     },
     {
       "name": "linux-default",
       "description": "linux-default",
       "displayName": "linux-default",
       "configurePreset": "linux-default"
-    },
-    {
-      "name": "x86_64-apple-darwin",
-      "description": "x86_64-apple-darwin",
-      "displayName": "x86_64-apple-darwin",
-      "configurePreset": "x86_64-apple-darwin"
     }
   ],
   "workflowPresets": [
     {
       "name": "arm64-apple-darwin",
-      "description": "",
-      "displayName": "",
+      "description": "MacOS arm64 workflow presets.",
+      "displayName": "MacOS arm64 workflow",
       "steps": [
         {
           "type": "configure",
@@ -175,36 +181,13 @@
         {
           "type": "package",
           "name": "arm64-apple-darwin"
-        }
-      ]
-    },
-    {
-      "name": "linux-default",
-      "description": "",
-      "displayName": "",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "linux-default"
-        },
-        {
-          "type": "build",
-          "name": "linux-default"
-        },
-        {
-          "type": "test",
-          "name": "linux-default"
-        },
-        {
-          "type": "package",
-          "name": "linux-default"
         }
       ]
     },
     {
       "name": "x86_64-apple-darwin",
-      "description": "",
-      "displayName": "",
+      "description": "MacOS x86_64 workflow presets.",
+      "displayName": "MacOS x86_64 workflow",
       "steps": [
         {
           "type": "configure",
@@ -221,6 +204,29 @@
         {
           "type": "package",
           "name": "x86_64-apple-darwin"
+        }
+      ]
+    },
+    {
+      "name": "linux-default",
+      "description": "Linux workflow presets.",
+      "displayName": "Linux workflow",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "linux-default"
+        },
+        {
+          "type": "build",
+          "name": "linux-default"
+        },
+        {
+          "type": "test",
+          "name": "linux-default"
+        },
+        {
+          "type": "package",
+          "name": "linux-default"
         }
       ]
     }

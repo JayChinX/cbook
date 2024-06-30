@@ -71,7 +71,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # 设置是否生成compile_commands.json文件来记录编译过程
-# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 将b动态库文件链接到可执行文件 a
 # target_link_libraries(a b)
