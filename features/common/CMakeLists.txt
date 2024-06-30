@@ -5,3 +5,7 @@ project(common VERSION 0.1.0)
 file(GLOB_RECURSE COMMON_SRC md5.cpp)
 add_library(${PROJECT_NAME} SHARED ${COMMON_SRC})
 # add_library(common_lib STATIC ${COMMON_SRC})
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}
+        DESTINATION ${CMAKE_BINARY_DIR}/include
+        FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
