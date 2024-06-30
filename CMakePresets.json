@@ -1,228 +1,228 @@
 {
-    "version": 6,
-    "configurePresets": [
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "macos",
+      "hidden": true,
+      "generator": "Unix Makefiles",
+      "warnings": {
+        "dev": true,
+        "deprecated": true,
+        "unusedCli": false
+      },
+      "cacheVariables": {
+        "BUILD_TESTING": "OFF",
+        "CMAKE_C_COMPILER": "/usr/bin/clang",
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "CMAKE_MODULE_PATH": "${sourceDir}/cmake",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+      },
+      "environment": {
+        "VCPKG_ROOT": "/Users/qin/vcpkg"
+      }
+    },
+    {
+      "name": "arm64-apple-darwin",
+      "inherits": "macos",
+      "displayName": "Clang 14.0.0 arm64-apple-darwin22.1.0",
+      "description": "NetEase MSS C wrapper for macOS - Debug Configuration",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "BUILD_TESTING": "ON",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "VCPKG_TARGET_TRIPLET": "arm64-osx"
+      }
+    },
+    {
+      "name": "x86_64-apple-darwin",
+      "inherits": "macos",
+      "displayName": "Clang 14.0.0 x86_64-apple-darwin21.6.0",
+      "description": "使用编译器: C = /usr/bin/clang, CXX = /usr/bin/clang++",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "BUILD_TESTING": "ON",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "VCPKG_TARGET_TRIPLET": "x64-osx"
+      },
+      "environment": {
+        "VCPKG_ROOT": "/Users/qin/vcpkg"
+      }
+    },
+    {
+      "name": "linux",
+      "hidden": true,
+      "generator": "Unix Makefiles",
+      "warnings": {
+        "dev": true,
+        "deprecated": true,
+        "unusedCli": false
+      },
+      "cacheVariables": {
+        "BUILD_TESTING": "OFF",
+        "CMAKE_C_COMPILER": "/usr/sbin/clang",
+        "CMAKE_CXX_COMPILER": "/usr/sbin/clang++",
+        "CMAKE_MODULE_PATH": "${sourceDir}/cmake/",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_TARGET_TRIPLET": "x64-linux",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      },
+      "environment": {
+        "VCPKG_ROOT": "/home/qin/vcpkg"
+      }
+    },
+    {
+      "name": "linux-default",
+      "inherits": "linux",
+      "displayName": "Clang 16.0.6 x86_64-pc-linux-gnu",
+      "description": "使用编译器: C = /usr/sbin/clang, CXX = /usr/sbin/clang++",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "BUILD_TESTING": "ON",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "arm64-apple-darwin",
+      "configurePreset": "arm64-apple-darwin"
+    },
+    {
+      "name": "linux-default",
+      "configurePreset": "linux-default"
+    },
+    {
+      "name": "x86_64-apple-darwin",
+      "configurePreset": "x86_64-apple-darwin"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "arm64-apple-darwin",
+      "configurePreset": "arm64-apple-darwin",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    },
+    {
+      "name": "linux-default",
+      "configurePreset": "linux-default",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    },
+    {
+      "name": "x86_64-apple-darwin",
+      "configurePreset": "x86_64-apple-darwin",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    }
+  ],
+  "packagePresets": [
+    {
+      "name": "arm64-apple-darwin",
+      "description": "arm64-apple-darwin",
+      "displayName": "arm64-apple-darwin",
+      "configurePreset": "arm64-apple-darwin"
+    },
+    {
+      "name": "linux-default",
+      "description": "linux-default",
+      "displayName": "linux-default",
+      "configurePreset": "linux-default"
+    },
+    {
+      "name": "x86_64-apple-darwin",
+      "description": "x86_64-apple-darwin",
+      "displayName": "x86_64-apple-darwin",
+      "configurePreset": "x86_64-apple-darwin"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "arm64-apple-darwin",
+      "description": "",
+      "displayName": "",
+      "steps": [
         {
-            "name": "macos",
-            "hidden": true,
-            "generator": "Unix Makefiles",
-            "warnings": {
-                "dev": true,
-                "deprecated": true,
-                "unusedCli": false
-            },
-            "cacheVariables": {
-                "BUILD_TESTING": "OFF",
-                "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-                "CMAKE_MODULE_PATH": "${sourceDir}/cmake",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
-            },
-            "environment": {
-                "VCPKG_ROOT": "/Users/qin/vcpkg"
-            }
+          "type": "configure",
+          "name": "arm64-apple-darwin"
         },
         {
-            "name": "arm64-apple-darwin",
-            "inherits": "macos",
-            "displayName": "Clang 14.0.0 arm64-apple-darwin22.1.0",
-            "description": "NetEase MSS C wrapper for macOS - Debug Configuration",
-            "binaryDir": "${sourceDir}/build",
-            "cacheVariables": {
-                "BUILD_TESTING": "ON",
-                "CMAKE_BUILD_TYPE": "Debug",
-                "VCPKG_TARGET_TRIPLET": "arm64-osx"
-            }
+          "type": "build",
+          "name": "arm64-apple-darwin"
         },
         {
-            "name": "linux",
-            "hidden": true,
-            "generator": "Unix Makefiles",
-            "warnings": {
-                "dev": true,
-                "deprecated": true,
-                "unusedCli": false
-            },
-            "cacheVariables": {
-                "BUILD_TESTING": "OFF",
-                "CMAKE_C_COMPILER": "/usr/sbin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/sbin/clang++",
-                "CMAKE_MODULE_PATH": "${sourceDir}/cmake/",
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_TARGET_TRIPLET": "x64-linux",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true
-            },
-            "environment": {
-                "VCPKG_ROOT": "/home/qin/vcpkg"
-            }
+          "type": "test",
+          "name": "arm64-apple-darwin"
         },
         {
-            "name": "linux-default",
-            "inherits": "linux",
-            "displayName": "Clang 16.0.6 x86_64-pc-linux-gnu",
-            "description": "使用编译器: C = /usr/sbin/clang, CXX = /usr/sbin/clang++",
-            "binaryDir": "${sourceDir}/build",
-            "cacheVariables": {
-                "BUILD_TESTING": "ON",
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
-            }
-        },
-        {
-            "name": "x86_64-apple-darwin",
-            "inherits": "macos",
-            "displayName": "Clang 14.0.0 x86_64-apple-darwin21.6.0",
-            "description": "使用编译器: C = /usr/bin/clang, CXX = /usr/bin/clang++",
-            "binaryDir": "${sourceDir}/build",
-            "cacheVariables": {
-                "BUILD_TESTING": "ON",
-                "CMAKE_BUILD_TYPE": "Debug",
-                "VCPKG_TARGET_TRIPLET": "x64-osx"
-            },
-            "environment": {
-                "VCPKG_ROOT": "/Users/qin/vcpkg"
-            }
+          "type": "package",
+          "name": "arm64-apple-darwin"
         }
-    ],
-    "buildPresets": [
+      ]
+    },
+    {
+      "name": "linux-default",
+      "description": "",
+      "displayName": "",
+      "steps": [
         {
-            "name": "arm64-apple-darwin",
-            "configurePreset": "arm64-apple-darwin"
+          "type": "configure",
+          "name": "linux-default"
         },
         {
-            "name": "linux-default",
-            "configurePreset": "linux-default"
+          "type": "build",
+          "name": "linux-default"
         },
         {
-            "name": "x86_64-apple-darwin",
-            "configurePreset": "x86_64-apple-darwin"
+          "type": "test",
+          "name": "linux-default"
+        },
+        {
+          "type": "package",
+          "name": "linux-default"
         }
-    ],
-    "testPresets": [
+      ]
+    },
+    {
+      "name": "x86_64-apple-darwin",
+      "description": "",
+      "displayName": "",
+      "steps": [
         {
-            "name": "arm64-apple-darwin",
-            "configurePreset": "arm64-apple-darwin",
-            "output": {
-                "outputOnFailure": true
-            },
-            "execution": {
-                "noTestsAction": "error",
-                "stopOnFailure": true
-            }
+          "type": "configure",
+          "name": "x86_64-apple-darwin"
         },
         {
-            "name": "linux-default",
-            "configurePreset": "linux-default",
-            "output": {
-                "outputOnFailure": true
-            },
-            "execution": {
-                "noTestsAction": "error",
-                "stopOnFailure": true
-            }
+          "type": "build",
+          "name": "x86_64-apple-darwin"
         },
         {
-            "name": "x86_64-apple-darwin",
-            "configurePreset": "x86_64-apple-darwin",
-            "output": {
-                "outputOnFailure": true
-            },
-            "execution": {
-                "noTestsAction": "error",
-                "stopOnFailure": true
-            }
+          "type": "test",
+          "name": "x86_64-apple-darwin"
+        },
+        {
+          "type": "package",
+          "name": "x86_64-apple-darwin"
         }
-    ],
-    "packagePresets": [
-        {
-            "name": "arm64-apple-darwin",
-            "description": "arm64-apple-darwin",
-            "displayName": "arm64-apple-darwin",
-            "configurePreset": "arm64-apple-darwin"
-        },
-        {
-            "name": "linux-default",
-            "description": "linux-default",
-            "displayName": "linux-default",
-            "configurePreset": "linux-default"
-        },
-        {
-            "name": "x86_64-apple-darwin",
-            "description": "x86_64-apple-darwin",
-            "displayName": "x86_64-apple-darwin",
-            "configurePreset": "x86_64-apple-darwin"
-        }
-    ],
-    "workflowPresets": [
-        {
-            "name": "arm64-apple-darwin",
-            "description": "",
-            "displayName": "",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "arm64-apple-darwin"
-                },
-                {
-                    "type": "build",
-                    "name": "arm64-apple-darwin"
-                },
-                {
-                    "type": "test",
-                    "name": "arm64-apple-darwin"
-                },
-                {
-                    "type": "package",
-                    "name": "arm64-apple-darwin"
-                }
-            ]
-        },
-        {
-            "name": "linux-default",
-            "description": "",
-            "displayName": "",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "linux-default"
-                },
-                {
-                    "type": "build",
-                    "name": "linux-default"
-                },
-                {
-                    "type": "test",
-                    "name": "linux-default"
-                },
-                {
-                    "type": "package",
-                    "name": "linux-default"
-                }
-            ]
-        },
-        {
-            "name": "x86_64-apple-darwin",
-            "description": "",
-            "displayName": "",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "x86_64-apple-darwin"
-                },
-                {
-                    "type": "build",
-                    "name": "x86_64-apple-darwin"
-                },
-                {
-                    "type": "test",
-                    "name": "x86_64-apple-darwin"
-                },
-                {
-                    "type": "package",
-                    "name": "x86_64-apple-darwin"
-                }
-            ]
-        }
-    ]
+      ]
+    }
+  ]
 }
