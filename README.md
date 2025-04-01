@@ -6,27 +6,29 @@
 
 存放头文件
 
-### sre dir
+## 构建
 
-存放源文件
+### 安装依赖并配置环境
 
+```sh
+$ conan install . --output-folder=build --build=missing
+```
 
-```json
-{
-    "name": "books",
-    "version": "1.0.0",
-    "dependencies": [
-        "zlib",
-        "fmt",
-        "rapidjson",
-        "gtest"
-    ],
-    "builtin-baseline": "72d66da23b4332533c82d797bf2f82b8d6d1bf8a",
-    "overrides": [
-        {
-            "name": "zlib",
-            "version": "1.3.1"
-        }
-    ]
-}
+默认 release 构建
+
+### 配置 Cmake 和构建
+
+```sh
+$ cd build
+$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+```
+
+### debug 构建
+
+```sh
+# 安装依赖并配置环境
+$ conan install . --output-folder=build --build=missing --settings=build_type=Debug
+# 配置 Cmake
+$ cd build
+$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug
 ```

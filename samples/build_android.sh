@@ -3,10 +3,10 @@
 API=21                                                # api
 NDK=/Users/qin/Library/Android/sdk/ndk/23.1.7779620   # ndk
 TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/darwin-x86_64 # 编译器 clang
-OUTPUT=$(pwd)/android                                 # 输出文件夹
+OUTPUT=$(pwd)/build/android                           # 输出文件夹
 ABIS=(armeabi-v7a arm64-v8a x86 x86_64)
 
-SOURCE=../features/common
+SOURCE=$(pwd)/features/common
 
 SYSROOT=$TOOLCHAIN/sysroot # 配置编译环境c语言的头文件环境
 
