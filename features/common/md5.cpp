@@ -3,15 +3,15 @@
 #include <cstring>
 
 const byte MD5::PADDING[64] = {0x80};
-const char MD5::HEX_NUMBERS[16] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                                   '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+const char MD5::HEX_NUMBERS[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
 /**
  * @brief Construct a new MD5::MD5 object with a string.
  *
  * @param message will be transformed.
  */
-MD5::MD5(const string &message) {
+MD5::MD5(const string &message)
+{
     finished = false;
     /* 初始化 */
     count[0] = count[1] = 0;
@@ -28,7 +28,8 @@ MD5::MD5(const string &message) {
  *
  * @return const byte*
  */
-const byte *MD5::getDigest() {
+const byte *MD5::getDigest()
+{
     if (!finished) {
         finished = true;
         byte bits[8];
@@ -55,14 +56,17 @@ const byte *MD5::getDigest() {
     return digest;
 }
 
-void MD5::init(const byte *input, size_t len) {
+void MD5::init(const byte *input, size_t len)
+{
     bit32 i, index, partLen;
 
     finished = false;
 
     index = (bit32)((count[0] >> 3) & 0x3f);
 
-    if ((count[0] += ((bit32)len << 3)) < ((bit32)len << 3)) { ++count[1]; }
+    if ((count[0] += ((bit32)len << 3)) < ((bit32)len << 3)) {
+        ++count[1];
+    }
     count[1] += ((bit32)len >> 29);
 
     partLen = 64 - index;
@@ -71,14 +75,17 @@ void MD5::init(const byte *input, size_t len) {
         memcpy(&buffer[index], input, partLen);
         transform(buffer);
 
-        for (i = partLen; i + 63 < len; i += 64) { transform(&input[i]); }
+        for (i = partLen; i + 63 < len; i += 64) {
+            transform(&input[i]);
+        }
         index = 0;
     } else {
         i = 0;
     }
     memcpy(&buffer[index], &input[i], len - i);
 }
-void MD5::transform(const byte block[64]) {
+void MD5::transform(const byte block[64])
+{
     bit32 a = state[0], b = state[1], c = state[2], d = state[3], x[16];
 
     decode(block, x, 64);
@@ -161,7 +168,8 @@ void MD5::transform(const byte block[64]) {
     state[3] += d;
 }
 
-void MD5::encode(const bit32 *input, byte *output, size_t length) {
+void MD5::encode(const bit32 *input, byte *output, size_t length)
+{
     for (size_t i = 0, j = 0; j < length; ++i, j += 4) {
         output[j] = (byte)(input[i] & 0xff);
         output[j + 1] = (byte)((input[i] >> 8) & 0xff);
@@ -170,15 +178,16 @@ void MD5::encode(const bit32 *input, byte *output, size_t length) {
     }
 }
 
-void MD5::decode(const byte *input, bit32 *output, size_t length) {
+void MD5::decode(const byte *input, bit32 *output, size_t length)
+{
     for (size_t i = 0, j = 0; j < length; ++i, j += 4) {
-        output[i] = ((bit32)input[j]) | (((bit32)input[j + 1]) << 8)
-                    | (((bit32)input[j + 2]) << 16)
-                    | (((bit32)input[j + 3]) << 24);
+        output[i] = ((bit32)input[j]) | (((bit32)input[j + 1]) << 8) | (((bit32)input[j + 2]) << 16) |
+                    (((bit32)input[j + 3]) << 24);
     }
 }
 
-string MD5::toStr() {
+string MD5::toStr()
+{
     const byte *digest_ = getDigest();
     string str;
     str.reserve(16 << 1);
