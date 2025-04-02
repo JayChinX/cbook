@@ -107,7 +107,8 @@
   "partialDiff.hideCommandsOnContextMenu": false,
   "clangd.arguments": [
     "--background-index",
-    "--compile-commands-dir=build",
+    // "--compile-commands-dir=build",
+    "--compile-commands-dir=${workspaceFolder}/build/Debug",
     "-j=12",
     // "--folding-ranges",
     "--query-driver=/usr/bin/clang++",
@@ -353,8 +354,9 @@
   ],
   "cmake.generator": "Unix Makefiles",
   "cmake.configureSettings": {
-    "CMAKE_TOOLCHAIN_FILE": "/Users/qin/vcpkg/scripts/buildsystems/vcpkg.cmake",
-    "VCPKG_TARGET_TRIPLET": "arm64-osx"
+    // "CMAKE_TOOLCHAIN_FILE": "/Users/qin/vcpkg/scripts/buildsystems/vcpkg.cmake",
+    "VCPKG_TARGET_TRIPLET": "arm64-osx",
+    // "CMAKE_BUILD_TYPE": "Debug",
   },
   "cmake.useCMakePresets": "always"
 }

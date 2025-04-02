@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.11.0)
 project(books VERSION 0.1.0)
 
 # 制定C++版本 C++11
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_STANDARD 14)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 第三方依赖脚本
 # set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -33,13 +33,18 @@ add_executable(${PROJECT_NAME} ${SRC})
 # add_library(book SHARED main.cpp bookssm.cpp)
 
 # # 编译参数 debug/release
-# set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_BUILD_TYPE Debug)
 # # set(CMAKE_BUILD_TYPE Release)
 
 # if (NOT CMAKE_BUILD_TYPE)
 # set(CMAKE_BUILD_TYPE Release)
 # message("Setting default build type to Release")
 # endif()
+
+# set(CMAKE_TOOLCHAIN_FILE ${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
+
+# 设置是否生成 compile_commands.json 文件来记录编译过程
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # target_include_directories(${PROJECT_NAME} PUBLIC common)
 
@@ -69,9 +74,6 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 # 输出可动态库文件存放目录
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
-
-# 设置是否生成compile_commands.json文件来记录编译过程
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 将b动态库文件链接到可执行文件 a
 # target_link_libraries(a b)

@@ -8,10 +8,14 @@
 
 ## 构建
 
+```
+conan profile detect --force
+```
+
 ### 安装依赖并配置环境
 
 ```sh
-$ conan install . --output-folder=build --build=missing
+$ conan install . --build=missing
 ```
 
 默认 release 构建
@@ -20,15 +24,15 @@ $ conan install . --output-folder=build --build=missing
 
 ```sh
 $ cd build
-$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+$ cmake ..
 ```
 
 ### debug 构建
 
 ```sh
 # 安装依赖并配置环境
-$ conan install . --output-folder=build --build=missing --settings=build_type=Debug
+$ conan install . --build=missing --settings=build_type=Debug
 # 配置 Cmake
 $ cd build
-$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug
+$ cmake ..
 ```

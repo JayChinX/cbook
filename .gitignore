@@ -84,4 +84,4 @@ ffmpeg-*
 doc/video
 **/**.out.**/
 output
-CmakeUserPresets.json
+CMakeUserPresets.json
