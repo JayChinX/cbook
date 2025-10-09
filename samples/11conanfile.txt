@@ -1,0 +1,19 @@
+[requires]
+zlib/1.3.1
+gtest/1.16.0
+rapidjson/1.1.0
+imgui/1.92.2b
+glfw/3.4
+glew/2.2.0
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[layout]
+cmake_layout
+
+# 自动复制文件（关键配置）
+[imports]
+res/bindings/*glfw* = bindings  # 复制 imgui 包中 res/bindings 下含 glfw 的文件到项目 bindings 目录
+res/bindings/*opengl3* = bindings  # 复制含 opengl3 的文件到 bindings 目录

@@ -1,9 +1,12 @@
-cmake_minimum_required(VERSION 3.11.0)
+cmake_minimum_required(VERSION 3.15.0)
 project(books VERSION 0.1.0)
 
 # 制定C++版本 C++11
-# set(CMAKE_CXX_STANDARD 14)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 设置是否生成 compile_commands.json 文件来记录编译过程
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 第三方依赖脚本
 # set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -17,10 +20,14 @@ option(BUILD_FUZZING "set ON to build library fuzzers" OFF)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+
 # 定义变量 SRC = *.cpp + *.cpp
 # set(SRC src/main.cpp src/books.cpp)
-file(GLOB_RECURSE SRC src/*.cpp)
-
+file(GLOB_RECURSE SRC src/*.cpp bindings/imgui_impl_glfw.cpp
+                bindings/imgui_impl_glfw.h
+                bindings/imgui_impl_opengl3.cpp
+                bindings/imgui_impl_opengl3.h
+                bindings/imgui_impl_opengl3_loader.h)
 # 生成可执行文件 + 多文件打包
 add_executable(${PROJECT_NAME} ${SRC})
 
@@ -43,13 +50,22 @@ set(CMAKE_BUILD_TYPE Debug)
 
 # set(CMAKE_TOOLCHAIN_FILE ${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
-# 设置是否生成 compile_commands.json 文件来记录编译过程
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+## deps third party 第三方依赖
+find_package(imgui REQUIRED CONFIG)
+find_package(glfw3 REQUIRED)
+find_package(glew REQUIRED)
+message(STATUS "IMGUI_SRC_DIR: ${IMGUI_SRC_DIR}")
+target_compile_definitions(${PROJECT_NAME} PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)
+target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui glfw GLEW::GLEW)
 
 # target_include_directories(${PROJECT_NAME} PUBLIC common)
 
 # target_link_libraries(${PROJECT_NAME} common)
+# 将b动态库文件链接到可执行文件 a
+# target_link_libraries(a b)
 
+## sub project 子项目
+# 声明 library 库
 # 将要进行测试的文件编译为静态库
 # file(GLOB_RECURSE TEST_SRC src/book.cpp src/books.cpp)
 # add_library(book_lib STATIC ${TEST_SRC})
@@ -57,9 +73,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # add_subdirectory(lib/googletest)
 # add_subdirectory(jnitest)
 add_subdirectory(features/common)
-add_subdirectory(lib/server)
-add_subdirectory(features/server)
+# add_subdirectory(lib/server)
+# add_subdirectory(features/server)
 
+## test 测试配置
 if(BUILD_TESTING OR BUILD_FUZZING)
     if(BUILD_TESTING)
         include(CTest)
@@ -68,6 +85,7 @@ if(BUILD_TESTING OR BUILD_FUZZING)
     add_subdirectory(test)
 endif()
 
+## 打包输出
 # PROJECT_SOURCE_DIR/CMAKE_SOURCE_DIR/_SOURCE_DIR： 为包含PROJECT()命令的最近一个CMakeLists.txt文件所在的文件夹路径。
 # 输出可执行文件存放目录 PROJECT_BINARY_DIR 运行cmake命令的目录，即工程编译发生的路径
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
@@ -75,9 +93,9 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 # 输出可动态库文件存放目录
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-# 将b动态库文件链接到可执行文件 a
-# target_link_libraries(a b)
 
+
+## 编译选项
 # 自定义编译选项
 option(USE_MYMATH "Use code provided math implementation" OFF)
 
@@ -105,8 +123,9 @@ endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDES})
 
+## install 打包配置
 # 打包编译产物 books文件 books_test文件 common_test文件  到 pkg 中
-install(TARGETS books common simple-web-server http_examples
+install(TARGETS books common
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
@@ -121,7 +140,7 @@ install(CODE [[
 file(GET_RUNTIME_DEPENDENCIES
     RESOLVED_DEPENDENCIES_VAR RESOLVED_DEPS
     UNRESOLVED_DEPENDENCIES_VAR UNRESOLVED_DEPS
-    EXECUTABLES "features/server/http_examples"
+    # EXECUTABLES "features/server/http_examples"
     # LIBRARIES "lib/server/simple-web-server"
     # DIRECTORIES $<TARGET_FILE_DIR:books>
     # PRE_INCLUDE_REGEXES $<TARGET_FILE_DIR:books>
