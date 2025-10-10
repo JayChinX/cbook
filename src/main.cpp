@@ -10,7 +10,7 @@
 #include "../bindings/imgui_impl_glfw.h"
 #include "../bindings/imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
-#include "Application.hpp"
+#include "app.h"
 
 #ifdef USE_MYMATH
 #include <mathfunctions.h>

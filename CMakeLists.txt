@@ -40,7 +40,10 @@ add_executable(${PROJECT_NAME} ${SRC})
 # add_library(book SHARED main.cpp bookssm.cpp)
 
 # # 编译参数 debug/release
-set(CMAKE_BUILD_TYPE Debug)
+# Only set a default build type if the user hasn't provided one
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 # # set(CMAKE_BUILD_TYPE Release)
 
 # if (NOT CMAKE_BUILD_TYPE)
@@ -140,16 +143,10 @@ install(CODE [[
 file(GET_RUNTIME_DEPENDENCIES
     RESOLVED_DEPENDENCIES_VAR RESOLVED_DEPS
     UNRESOLVED_DEPENDENCIES_VAR UNRESOLVED_DEPS
-    # EXECUTABLES "features/server/http_examples"
-    # LIBRARIES "lib/server/simple-web-server"
-    # DIRECTORIES $<TARGET_FILE_DIR:books>
-    # PRE_INCLUDE_REGEXES $<TARGET_FILE_DIR:books>
-    # PRE_EXCLUDE_REGEXES "system32"
-    # POST_INCLUDE_REGEXES $<TARGET_FILE_DIR:books>
-    # POST_EXCLUDE_REGEXES "system32"
+    EXECUTABLES $<TARGET_FILE:books>
 )
 foreach(DEP_LIB ${RESOLVED_DEPS})
-    file(INSTALL ${DEP_LIB} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "${DEP_LIB}")
 endforeach()
 ]])
 

@@ -1,5 +1,5 @@
-#ifndef __APPLICATION_H__
-#define __APPLICATION_H__
+#ifndef __APP_H__
+#define __APP_H__
 
 #include <imgui.h>
 #include <cmath>
@@ -52,4 +52,4 @@ inline void Render()
 }
 }  // namespace app
 
-#endif  // __APPLICATION_H__
+#endif  // __APP_H__
