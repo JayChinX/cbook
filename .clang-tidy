@@ -1,6 +1,6 @@
-WarningsAsErrors: "*"
+WarningsAsErrors: "-"
 HeaderFilterRegex: ".*"
-Checks: "src"
+Checks: 'modernize-*,performance-*,bugprone-*,readability-*'
 AnalyzeTemporaryDtors: false
 FormatStyle:     google
 User: user

@@ -1,16 +1,16 @@
+#include <GLFW/glfw3.h>
+#include <imgui.h>
+
 #include <cassert>
 #include <cstddef>
-#include <iostream>
-#include <cstdlib>
 #include <cstdio>
-#include "books.h"
-
-#include <imgui.h>
+#include <cstdlib>
+#include <iostream>
 
 #include "../bindings/imgui_impl_glfw.h"
 #include "../bindings/imgui_impl_opengl3.h"
-#include <GLFW/glfw3.h>
 #include "app.h"
+#include "books.h"
 
 #ifdef USE_MYMATH
 #include <mathfunctions.h>
@@ -54,9 +54,9 @@ int main(int, char **)
     ImGuiIO &io = ImGui::GetIO();
     (void)io;
     // io.Fonts->AddFont(const ImFontConfig *font_cfg);  // 获取 IO 对象
-    ImGui::StyleColorsDark();                         // 设置暗色主题
-    ImGui_ImplGlfw_InitForOpenGL(window, true);       // 初始化 GLFW 后端
-    ImGui_ImplOpenGL3_Init("#version 120");           // 初始化 OpenGL3 后端
+    ImGui::StyleColorsDark();                    // 设置暗色主题
+    ImGui_ImplGlfw_InitForOpenGL(window, true);  // 初始化 GLFW 后端
+    ImGui_ImplOpenGL3_Init("#version 120");      // 初始化 OpenGL3 后端
 
     // 主循环，直到窗口关闭
     while (!glfwWindowShouldClose(window)) {

@@ -2,6 +2,7 @@
 #define __APP_H__
 
 #include <imgui.h>
+
 #include <cmath>
 
 namespace app {
