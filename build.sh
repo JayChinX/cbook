@@ -16,6 +16,7 @@ DO_PACKAGE=0
 DO_REINSTALL=0
 BUILD_SH_DEBUG=0
 
+# 提示信息函数
 usage() {
 cat <<'EOF'
 Usage: $(basename "$0") [options]
@@ -41,6 +42,7 @@ Examples:
 EOF
 }
 
+# 命令行参数解析
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -h|--help) usage; exit 0;;
@@ -57,6 +59,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# clean build dir and output if requested, then exit
 if [[ $DO_CLEAN -eq 1 ]]; then
   # INSTALL_PREFIX is computed after argument parsing below
   echo "Cleaning ${BUILD_DIR} and output/ ..."
@@ -83,6 +86,7 @@ fi
 echo "Configuring CMake (type=${BUILD_TYPE})..."
 
 # Detect Conan-generated toolchain/prefix (prefer config-specific generators e.g. build/Release/generators)
+# 判断conan生成的构建目录是否存在，并查找构建文件
 BIN_DIR="${BUILD_DIR}/${BUILD_TYPE}"
 TOOLCHAIN_FILE=""
 PREFIX_DIR=""
@@ -99,7 +103,7 @@ else
     PREFIX_DIR="$(dirname "$CT")"
   fi
 fi
-
+# CMake configure args
 CMARGS=( "-DCMAKE_POLICY_DEFAULT_CMP0091=NEW" "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}" )
 if [[ -n "$TOOLCHAIN_FILE" ]]; then
   CMARGS+=( "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}" )
@@ -110,13 +114,16 @@ fi
 
 # Ensure install prefix is configured at configure-time to avoid passing --prefix to cmake --install
 # Recompute INSTALL_PREFIX now that BUILD_TYPE may have been changed by args.
-INSTALL_PREFIX="$BIN_DIR/output"
+INSTALL_PREFIX="$ROOT_DIR/output/${BUILD_TYPE}"
 CMARGS+=( "-DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX}" )
 
 echo "Configuring CMake into: ${BIN_DIR}"
 echo "Using toolchain: ${TOOLCHAIN_FILE:-<none>}"
 echo "Using prefix path: ${PREFIX_DIR:-<none>}"
-cmake -S "${ROOT_DIR}" -B "${BIN_DIR}" "${CMARGS[@]}"
+
+echo "Running: cmake -S ${ROOT_DIR} -B ${BIN_DIR} ${CMARGS[*]}"
+cmake -S "${ROOT_DIR}" -B "${BIN_DIR}" "${CMARGS[@]}" # -S and -B are CMake 3.13+ only
+# cmake -S "${CODE_SOURCE_DIR}" -B "${BUILD_DIR}" "${CMARGS[@]}"
 
 # Build with cmake --build
 echo "Building from: ${BIN_DIR}"
@@ -155,4 +162,27 @@ fi
 
 popd >/dev/null
 
-echo "Build finished. Binary (if any) will be under: ${BUILD_DIR}/bin"
+# Summarize results with accurate, config-aware paths
+BIN_OUTPUT_DIR="${BIN_DIR}/bin"
+PKG_OUT_DIR="${INSTALL_PREFIX}/packages"
+
+echo
+echo "========================================"
+echo "✅ Build Completed Successfully!"
+echo "----------------------------------------"
+echo "  🛠️  Build type   : ${BUILD_TYPE}"
+echo "  📁 Build tree   : ${BIN_DIR}"
+if [[ -d "${BIN_OUTPUT_DIR}" ]]; then
+  echo "  🚀 Binaries     : ${BIN_OUTPUT_DIR}"
+else
+  echo "  🚫 Binaries     : (no binaries found at ${BIN_OUTPUT_DIR})"
+fi
+if [[ ${DO_INSTALL} -eq 1 ]]; then
+  echo "  📦 Installed to : ${INSTALL_PREFIX}"
+fi
+if [[ ${DO_PACKAGE} -eq 1 ]]; then
+  echo "  🎁 Packages dir : ${PKG_OUT_DIR}"
+fi
+echo "========================================"
+echo "🎉 All done. Happy coding!"
+echo

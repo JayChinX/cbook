@@ -18,7 +18,8 @@ option(BUILD_TESTING "set ON to build library tests" ON)
 # Fuzz测试 模糊测试
 option(BUILD_FUZZING "set ON to build library fuzzers" OFF)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+## Prefer target-based include directories instead of global include_directories
+# Add project include dir to the main target after it is created.
 
 
 # 定义变量 SRC = *.cpp + *.cpp
@@ -30,6 +31,9 @@ file(GLOB_RECURSE SRC src/*.cpp bindings/imgui_impl_glfw.cpp
                 bindings/imgui_impl_opengl3_loader.h)
 # 生成可执行文件 + 多文件打包
 add_executable(${PROJECT_NAME} ${SRC})
+
+# Use target_include_directories for controlled include propagation
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # target_include_directories(${PROJECT_NAME} PUBLIC common)
 
@@ -91,10 +95,12 @@ endif()
 ## 打包输出
 # PROJECT_SOURCE_DIR/CMAKE_SOURCE_DIR/_SOURCE_DIR： 为包含PROJECT()命令的最近一个CMakeLists.txt文件所在的文件夹路径。
 # 输出可执行文件存放目录 PROJECT_BINARY_DIR 运行cmake命令的目录，即工程编译发生的路径
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-
-# 输出可动态库文件存放目录
-set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+## Prefer target properties for output locations (modern CMake)
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib
+    ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib
+)
 
 
 
