@@ -109,6 +109,7 @@
     "--background-index",
     // "--compile-commands-dir=build",
     "--compile-commands-dir=${workspaceFolder}/build/Debug",
+    // "--compile-commands-dir=${workspaceFolder}/build/${buildType}",
     "-j=12",
     // "--folding-ranges",
     "--query-driver=/usr/bin/clang++",
@@ -358,5 +359,6 @@
     "VCPKG_TARGET_TRIPLET": "arm64-osx",
     // "CMAKE_BUILD_TYPE": "Debug",
   },
-  "cmake.useCMakePresets": "always"
+  "cmake.useCMakePresets": "always",
+  "cmake.cmakePath": "/usr/local/bin/cmake"
 }
