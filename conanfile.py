@@ -19,9 +19,9 @@ class CompressorRecipe(ConanFile):
 
     def generate(self):
         copy(self, "*glfw*", os.path.join(self.dependencies["imgui"].package_folder,
-             "res", "bindings"), os.path.join(self.source_folder, "bindings"))
+             "res", "bindings"), os.path.join(self.source_folder, "lib/imgui_backends"))
         copy(self, "*opengl3*", os.path.join(self.dependencies["imgui"].package_folder,
-             "res", "bindings"), os.path.join(self.source_folder, "bindings"))
+             "res", "bindings"), os.path.join(self.source_folder, "lib/imgui_backends"))
 
     def layout(self):
         cmake_layout(self)

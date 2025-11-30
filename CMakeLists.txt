@@ -24,24 +24,17 @@ option(BUILD_FUZZING "set ON to build library fuzzers" OFF)
 
 # 定义变量 SRC = *.cpp + *.cpp
 # set(SRC src/main.cpp src/books.cpp)
-file(GLOB_RECURSE SRC src/*.cpp bindings/imgui_impl_glfw.cpp
-                bindings/imgui_impl_glfw.h
-                bindings/imgui_impl_opengl3.cpp
-                bindings/imgui_impl_opengl3.h
-                bindings/imgui_impl_opengl3_loader.h)
+file(GLOB_RECURSE SRC src/*.cpp src/*.h)
 # 生成可执行文件 + 多文件打包
 add_executable(${PROJECT_NAME} ${SRC})
 
 # Use target_include_directories for controlled include propagation
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
-# target_include_directories(${PROJECT_NAME} PUBLIC common)
-
 # 多文件管理
 # set(SRC main.cpp bookssm.cpp)
 # # 生成库文件 .so 多文件打包
 # add_library(book SHARED ${SRC})
-# add_library(book SHARED main.cpp bookssm.cpp)
 
 # # 编译参数 debug/release
 # Only set a default build type if the user hasn't provided one
@@ -58,16 +51,8 @@ endif()
 # set(CMAKE_TOOLCHAIN_FILE ${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
 ## deps third party 第三方依赖
-find_package(imgui REQUIRED CONFIG)
-find_package(glfw3 REQUIRED)
-find_package(glew REQUIRED)
-message(STATUS "IMGUI_SRC_DIR: ${IMGUI_SRC_DIR}")
-target_compile_definitions(${PROJECT_NAME} PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)
-target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui glfw GLEW::GLEW)
+# find_package(imgui REQUIRED)
 
-# target_include_directories(${PROJECT_NAME} PUBLIC common)
-
-# target_link_libraries(${PROJECT_NAME} common)
 # 将b动态库文件链接到可执行文件 a
 # target_link_libraries(a b)
 
@@ -77,11 +62,11 @@ target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui glfw GLEW::GLEW)
 # file(GLOB_RECURSE TEST_SRC src/book.cpp src/books.cpp)
 # add_library(book_lib STATIC ${TEST_SRC})
 
-# add_subdirectory(lib/googletest)
-# add_subdirectory(jnitest)
+add_subdirectory(lib/imgui_backends) # 通过子项目管理 imgui 后端库
+target_link_libraries(${PROJECT_NAME} PRIVATE imgui_backends)
+
 add_subdirectory(features/common)
-# add_subdirectory(lib/server)
-# add_subdirectory(features/server)
+
 
 ## test 测试配置
 if(BUILD_TESTING OR BUILD_FUZZING)
@@ -134,7 +119,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDES})
 
 ## install 打包配置
 # 打包编译产物 books文件 books_test文件 common_test文件  到 pkg 中
-install(TARGETS books common
+install(TARGETS books common imgui_backends
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib

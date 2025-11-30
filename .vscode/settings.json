@@ -360,5 +360,5 @@
     // "CMAKE_BUILD_TYPE": "Debug",
   },
   "cmake.useCMakePresets": "always",
-  "cmake.cmakePath": "/usr/local/bin/cmake"
+  // "cmake.cmakePath": "/usr/local/bin/cmake"
 }
