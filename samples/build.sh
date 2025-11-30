@@ -1,74 +1,158 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# 安全的shell脚本，建议在脚本开头添加以下设置
-#  -e参数 在执行到某个命令返回非0时立即结束脚本。
-#  -u参数 将未设置的参数或者变量视为错误并退出脚本。
-#  -f参数 禁用文件名通配符。
-#  -o pipefail选项 在管道中某个命令出错时立即报错返回
-set -euf -o pipefail
+# build.sh - convenient build helper for this repository
+# Aligns with README.md: run conan install in build/ and then cmake configure+build
 
-ARCH=`uname -m`
-preset='x86_64-apple-darwin'
+set -euo pipefail
 
-case $(uname | tr '[:upper:]' '[:lower:]') in
-  linux*)
-    echo "system is linux"
-    preset='linux-default'
-    ;;
-  darwin*)
-    if [[ $ARCH =~ 'arm64' ]];then
-        echo "system is arm64_osx"
-        preset='arm64-apple-darwin'
-    else
-        echo "system is x64_osx"
-        preset='x86_64-apple-darwin'
-    fi
-    ;;
-  msys*)
-    echo "system is windows"
-    ;;
-  *)
-    export TRAVIS_OS_NAME=notset
-    ;;
-esac
+ROOT_DIR=$(pwd)
+BUILD_DIR="$ROOT_DIR/build"
 
-BUILD_DIR="build"
-INSTALL_DIR=$(pwd)/output
-rm -rf "${BUILD_DIR}"
+BUILD_TYPE=Release
+JOBS=0
+DO_CLEAN=0
+DO_INSTALL=0
+DO_PACKAGE=0
+DO_REINSTALL=0
+BUILD_SH_DEBUG=0
 
-# Configure 编译命令，与 vs 中 task配置类似
-# BUILD_TYPE=Debug
-# cmake -B "${BUILD_DIR}" \
-#     -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
-#     -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-#     -DCPACK_OUTPUT_FILE_PREFIX="${INSTALL_DIR}"
+usage() {
+cat <<'EOF'
+Usage: $(basename "$0") [options]
 
-# cmake -B "${BUILD_DIR}" 生成 makefile 文件等信息到 BUILD_DIR 文件夹，如 build 文件夹
-# cmake -B "${BUILD_DIR}"
+Options:
+  -h, --help        Show this help
+  -t, --type TYPE   Build type: Debug or Release (default: Release)
+  -j, --jobs N      Parallel jobs for build (passed to cmake --build)
+  --clean           Remove build/ and output/ then exit
+  --install         Run 'cmake --install' after successful build
+  --package         Run 'cmake --build --target package' after build
 
-# 配合 cmakepresets.json
-cmake  --preset=${preset}
+Examples:
+  # Default Release build
+  ./build.sh
 
-# Build 开始编译命令
-# cmake --build "${BUILD_DIR}"
+  # Debug build with 4 jobs and install
+  ./build.sh -t Debug -j 4 --install
 
-# 配合 cmakepresets.json
-cmake  --build --preset=${preset}
+  # Clean build directory
+  ./build.sh --clean
 
-cd "${BUILD_DIR}"
+EOF
+}
 
-# Test 执行单元测试
-# make test CTEST_OUTPUT_ON_FAILURE=TRUE GTEST_COLOR=TRUE
-# GTEST_COLOR=TRUE ctest --output-on-failure
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help) usage; exit 0;;
+    -t|--type) BUILD_TYPE="$2"; shift 2;;
+    -j|--jobs) JOBS="$2"; shift 2;;
+    --clean) DO_CLEAN=1; shift;;
+  --install) DO_INSTALL=1; shift;;
+  --reinstall) DO_REINSTALL=1; shift;;
+  --debug) BUILD_SH_DEBUG=1; shift;;
+    --package) DO_PACKAGE=1; shift;;
+    --) shift; break;;
+    -*) echo "Unknown option: $1"; usage; exit 1;;
+    *) break;;
+  esac
+done
 
-# Install 打包命令 安装到本地
-# cmake --build . --target install
-cmake --install . --prefix "../output" # After cmake 3.15
-# make install
+if [[ $DO_CLEAN -eq 1 ]]; then
+  # INSTALL_PREFIX is computed after argument parsing below
+  echo "Cleaning ${BUILD_DIR} and output/ ..."
+  rm -rf "${BUILD_DIR}" "${ROOT_DIR}/output"
+  echo "Clean done."
+  exit 0
+fi
 
-# Package 开始打包
-cmake --build . --target package
-# cmake --build . --target package_source
-# make package
+echo "Build type: ${BUILD_TYPE}"
+echo "Build dir: ${BUILD_DIR}"
 
-cd -
+mkdir -p "${BUILD_DIR}"
+pushd "${BUILD_DIR}" >/dev/null
+
+# Install Conan dependencies in build dir (per README)
+echo "Running: conan install .. --build=missing -s build_type=${BUILD_TYPE}"
+if command -v conan >/dev/null 2>&1; then
+  conan install .. --build=missing -s build_type=${BUILD_TYPE}
+else
+  echo "Warning: conan not found in PATH. Skipping conan install." >&2
+fi
+
+# Configure CMake
+echo "Configuring CMake (type=${BUILD_TYPE})..."
+
+# Detect Conan-generated toolchain/prefix (prefer config-specific generators e.g. build/Release/generators)
+BIN_DIR="${BUILD_DIR}/${BUILD_TYPE}"
+TOOLCHAIN_FILE=""
+PREFIX_DIR=""
+if [[ -f "${BIN_DIR}/generators/conan_toolchain.cmake" ]]; then
+  TOOLCHAIN_FILE="${BIN_DIR}/generators/conan_toolchain.cmake"
+  PREFIX_DIR="${BIN_DIR}/generators"
+elif [[ -f "${BUILD_DIR}/generators/conan_toolchain.cmake" ]]; then
+  TOOLCHAIN_FILE="${BUILD_DIR}/generators/conan_toolchain.cmake"
+  PREFIX_DIR="${BUILD_DIR}/generators"
+else
+  CT=$(find "${BUILD_DIR}" -type f -name conan_toolchain.cmake -print -quit 2>/dev/null || true)
+  if [[ -n "$CT" ]]; then
+    TOOLCHAIN_FILE="$CT"
+    PREFIX_DIR="$(dirname "$CT")"
+  fi
+fi
+
+CMARGS=( "-DCMAKE_POLICY_DEFAULT_CMP0091=NEW" "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}" )
+if [[ -n "$TOOLCHAIN_FILE" ]]; then
+  CMARGS+=( "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}" )
+fi
+if [[ -n "$PREFIX_DIR" ]]; then
+  CMARGS+=( "-DCMAKE_PREFIX_PATH=${PREFIX_DIR}" )
+fi
+
+# Ensure install prefix is configured at configure-time to avoid passing --prefix to cmake --install
+# Recompute INSTALL_PREFIX now that BUILD_TYPE may have been changed by args.
+INSTALL_PREFIX="$BIN_DIR/output"
+CMARGS+=( "-DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX}" )
+
+echo "Configuring CMake into: ${BIN_DIR}"
+echo "Using toolchain: ${TOOLCHAIN_FILE:-<none>}"
+echo "Using prefix path: ${PREFIX_DIR:-<none>}"
+cmake -S "${ROOT_DIR}" -B "${BIN_DIR}" "${CMARGS[@]}"
+
+# Build with cmake --build
+echo "Building from: ${BIN_DIR}"
+if [[ ${JOBS} -gt 0 ]]; then
+  echo "Building with ${JOBS} parallel jobs"
+  cmake --build "${BIN_DIR}" --parallel ${JOBS}
+else
+  cmake --build "${BIN_DIR}"
+fi
+
+if [[ ${DO_INSTALL} -eq 1 ]]; then
+  echo "Installing to ${INSTALL_PREFIX}..."
+  # Optionally remove previous install to force a full reinstall
+  if [[ ${DO_REINSTALL} -eq 1 ]]; then
+    echo "-- Reinstall requested: removing ${INSTALL_PREFIX} before install"
+    rm -rf "${INSTALL_PREFIX}"
+  fi
+  # Use the install target via cmake --build so we can pass VERBOSE=1 reliably to the underlying generator
+  if [[ ${BUILD_SH_DEBUG} -ne 0 ]]; then
+    set -x
+  fi
+  cmake --build "${BIN_DIR}" --target install --config "${BUILD_TYPE}" -- VERBOSE=1
+fi
+
+if [[ ${DO_PACKAGE} -eq 1 ]]; then
+  echo "Packaging..."
+  cmake --build "${BIN_DIR}" --target package
+  # Collect generated package files (common archive formats) into the output folder
+  PKG_OUT_DIR="${INSTALL_PREFIX}/packages"
+  mkdir -p "${PKG_OUT_DIR}"
+  echo "Moving generated packages to ${PKG_OUT_DIR} ..."
+  # find packages in the build dir and move them; be tolerant if none found
+  find "${BIN_DIR}" -maxdepth 1 -type f \( -name "*.tar.gz" -o -name "*.tgz" -o -name "*.zip" -o -name "*.dmg" -o -name "*.pkg" \) -print0 |
+    xargs -0 -I{} bash -c 'mv "$1" "$2"' -- {} "${PKG_OUT_DIR}" || true
+fi
+
+popd >/dev/null
+
+echo "Build finished. Binary (if any) will be under: ${BUILD_DIR}/bin"
