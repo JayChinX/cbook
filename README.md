@@ -15,6 +15,7 @@ bindings/           # ImGui 后端绑定（GLFW + OpenGL3 + loader）
 features/           # 可选功能模块（例如 mathfunctions）
 test/               # 测试代码目录
 CMakeLists.txt      # 顶层 CMake 构建文件
+conanfile.py        # Conan 依赖管理文件（如果使用 Conan）
 ```
 
 ## 依赖和环境
@@ -31,7 +32,7 @@ $ conan profile detect --force
 > 生成一个新的配置文件，通常命名为 default，并存储在 ~/.conan/profiles/ 目录下
 
 ```sh
-$ conan install .. --build=missing
+$ conan install . --build=missing
 ```
 
 生成并安装依赖到当前 build 目录（Release 为默认）：
@@ -40,7 +41,7 @@ $ conan install .. --build=missing
 如果需要 Debug 构建，请显式指定：
 
 ```sh
-$ conan install .. --build=missing -s build_type=Debug
+$ conan install . --build=missing -s build_type=Debug
 ```
 
 默认 release 构建

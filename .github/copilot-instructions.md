@@ -12,12 +12,14 @@ This repository is a small C++ project (project name: `books`) that builds with 
 Quick facts the agent should know
 
 - Build system: uses CMake. Typical local flow:
+
   - `conan install . --build=missing` (optional, repo references conan in README)
   - `mkdir build && cd build && cmake ..` (CMake config)
   - `cmake --build .` or `make` (build outputs to `build/bin`)
   - Default CMake build type is Debug in `CMakeLists.txt` (overridable)
 
 - Binaries and artifacts:
+
   - Executable name is `books` (set by project name in `CMakeLists.txt`)
   - `CMakeLists.txt` sets `EXECUTABLE_OUTPUT_PATH` to `${PROJECT_BINARY_DIR}/bin`
 
@@ -53,7 +55,7 @@ Developer workflows for local dev
 
   mkdir -p build
   cd build
-  conan install .. --build=missing   # optional if you use conan
+  conan install .. --build=missing # optional if you use conan
   cmake ..
   cmake --build .
 
@@ -62,6 +64,7 @@ Developer workflows for local dev
 Where to look next (important files)
 
 - `CMakeLists.txt` — build flags, dependencies, outputs
+- `conanfile.py` — dependency management (if using conan)
 - `src/main.cpp` — startup/shutdown and ImGui/GLFW orchestration
 - `src/app.h` — UI entry and immediate place for UI edits
 - `src/books.cpp`, `src/books.h`, `src/book.h` — data model and file-backed storage
