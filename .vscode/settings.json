@@ -353,6 +353,9 @@
     "-Wall",
     "-Werror",
   ],
+  "cmake.ctestArgs": [
+    "-V"
+  ],
   "cmake.generator": "Unix Makefiles",
   "cmake.configureSettings": {
     // "CMAKE_TOOLCHAIN_FILE": "/Users/qin/vcpkg/scripts/buildsystems/vcpkg.cmake",
@@ -360,5 +363,6 @@
     // "CMAKE_BUILD_TYPE": "Debug",
   },
   "cmake.useCMakePresets": "always",
-  // "cmake.cmakePath": "/usr/local/bin/cmake"
+  "cmake.cmakePath": "C:/Program Files/CMake/bin/cmake.exe",
+  "clangd.path": "C:/Program Files/LLVM/bin/clangd.exe"
 }

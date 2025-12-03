@@ -65,15 +65,19 @@ endif()
 add_subdirectory(lib/imgui_backends) # 通过子项目管理 imgui 后端库
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui_backends)
 
+add_subdirectory(lib/json11)
+
 add_subdirectory(features/common)
 
 
 ## test 测试配置
 if(BUILD_TESTING OR BUILD_FUZZING)
+    ## 启用 CTest 测试框架
     if(BUILD_TESTING)
         include(CTest)
         enable_testing()
     endif()
+    ## 添加 test 子目录
     add_subdirectory(test)
 endif()
 

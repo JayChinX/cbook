@@ -1,28 +1,45 @@
 # book
-
-set(TEST ${CMAKE_PROJECT_NAME}_test)
-
-file(GLOB_RECURSE TEST_SRC book/unittest.cpp)
 find_package(GTest REQUIRED)
+# GTest 头文件路径（部分系统需显式指定，如 Ubuntu）
+# include_directories(${GTEST_INCLUDE_DIRS})
+message(STATUS "GTest_INCLUDE_DIR: ${GTest_INCLUDE_DIR}")
 
+# ctest 测试无细节输出，需要加 -V 参数查看详细输出
+
+## book unittest
+set(TEST ${CMAKE_PROJECT_NAME}_test)
+file(GLOB_RECURSE TEST_SRC book/unittest.cpp)
 add_executable(${TEST} ${TEST_SRC})
 add_test(NAME ${TEST} COMMAND ${TEST})
-message(STATUS "GTest_INCLUDE_DIR: ${GTest_INCLUDE_DIR}")
-# target_include_directories(${TEST} PUBLIC ${GTest_INCLUDE_DIR})
+target_include_directories(${TEST} PUBLIC ${GTest_INCLUDE_DIR})
 target_link_libraries(${TEST} PUBLIC gtest::gtest)
 
-# common
+## common unittest
 set(COMMON_TEST common_test)
-
 file(GLOB_RECURSE COMMON_TEST_SRC common/*.cpp)
-
 add_executable(${COMMON_TEST} ${COMMON_TEST_SRC})
-add_test(NAME ${COMMON_TEST} COMMAND ${COMMON_TEST})
+add_test(NAME ${COMMON_TEST} COMMAND ${COMMON_TEST}) # NAME = common_test
 
-target_include_directories(${COMMON_TEST} PUBLIC ${PROJECT_SOURCE_DIR}/features/common)
-target_link_libraries(${COMMON_TEST} PUBLIC common gtest::gtest)
+# 设置包含目录，指向 common 特性代码的位置
+# target_include_directories(${COMMON_TEST} PUBLIC ${PROJECT_SOURCE_DIR}/features/common)
+target_include_directories(${COMMON_TEST} PUBLIC ${GTest_INCLUDE_DIR})
+target_link_libraries(${COMMON_TEST} PUBLIC 
+    common  # 跨子目录链接核心库（直接用子目录定义的目标名）
+    gtest::gtest
+)
 
- # 这行代码用于包含Google Test框架的CMake模块。通过包含GoogleTest模块，可以使用Google Test提供的一些CMake函数和宏，用于配置和管理测试相关的任务。
+## json11 unittest
+set(JSON11_TEST json11_test)
+file(GLOB_RECURSE JSON11_TEST_SRC json11/*.cpp)
+add_executable(${JSON11_TEST} ${JSON11_TEST_SRC})
+add_test(NAME ${JSON11_TEST} COMMAND ${JSON11_TEST}) # NAME = json11_test
+target_include_directories(${JSON11_TEST} PUBLIC ${GTest_INCLUDE_DIR})
+target_link_libraries(${JSON11_TEST} PUBLIC 
+    json11  # 跨子目录链接核心库（直接用子目录定义的目标名）
+    gtest::gtest
+)
+
+# 这行代码用于包含Google Test框架的CMake模块。通过包含GoogleTest模块，可以使用Google Test提供的一些CMake函数和宏，用于配置和管理测试相关的任务。
 # include(GoogleTest)
 # find_package(GTest CONFIG REQUIRED)
 # 设置包含目录，通常这不是必需的，因为 FetchContent_MakeAvailable 已经处理了  
