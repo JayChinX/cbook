@@ -363,6 +363,6 @@
     // "CMAKE_BUILD_TYPE": "Debug",
   },
   "cmake.useCMakePresets": "always",
-  "cmake.cmakePath": "C:/Program Files/CMake/bin/cmake.exe",
-  "clangd.path": "C:/Program Files/LLVM/bin/clangd.exe"
+  // "cmake.cmakePath": "C:/Program Files/CMake/bin/cmake.exe",
+  // "clangd.path": "C:/Program Files/LLVM/bin/clangd.exe"
 }
