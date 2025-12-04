@@ -79,15 +79,7 @@
     "memory_resource": "c",
     "stdbool.h": "c"
   },
-  "C_Cpp.errorSquiggles": "Disabled",
-  "cSpell.enableFiletypes": [
-    "Log",
-    "cmake",
-    "cmake-cache",
-    "cmake-documentation",
-    "drawio",
-    "jsx"
-  ],
+  "C_Cpp.errorSquiggles": "disabled",
   "cSpell.words": [
     "cmake",
     "当前状态"

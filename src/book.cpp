@@ -1,6 +1,7 @@
+#include "book.h"
+
 #include <string>
 #include <thread>
-#include "book.h"
 
 Book Book::setId(std::string id)
 {

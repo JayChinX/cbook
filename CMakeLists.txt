@@ -24,7 +24,7 @@ option(BUILD_FUZZING "set ON to build library fuzzers" OFF)
 
 # 定义变量 SRC = *.cpp + *.cpp
 # set(SRC src/main.cpp src/books.cpp)
-file(GLOB_RECURSE SRC src/*.cpp src/*.h)
+file(GLOB_RECURSE SRC src/*.cpp)
 # 生成可执行文件 + 多文件打包
 add_executable(${PROJECT_NAME} ${SRC})
 
@@ -39,7 +39,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # # 编译参数 debug/release
 # Only set a default build type if the user hasn't provided one
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
 endif()
 # # set(CMAKE_BUILD_TYPE Release)
 

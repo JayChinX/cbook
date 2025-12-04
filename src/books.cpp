@@ -1,10 +1,12 @@
-#include <cstring>
-#include <iostream>
+#include "books.h"
+
 #include <cstdio>
 #include <cstdlib>
-#include <string>
+#include <cstring>
 #include <fstream>
-#include "books.h"
+#include <iostream>
+#include <string>
+
 #include "book.h"
 
 #define MAX 1000
