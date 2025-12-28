@@ -62,11 +62,8 @@ endif()
 # file(GLOB_RECURSE TEST_SRC src/book.cpp src/books.cpp)
 # add_library(book_lib STATIC ${TEST_SRC})
 
-add_subdirectory(lib/imgui_backends) # 通过子项目管理 imgui 后端库
-target_link_libraries(${PROJECT_NAME} PRIVATE imgui_backends)
 
 add_subdirectory(lib/json11)
-
 add_subdirectory(features/common)
 
 
@@ -123,7 +120,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDES})
 
 ## install 打包配置
 # 打包编译产物 books文件 books_test文件 common_test文件  到 pkg 中
-install(TARGETS books common imgui_backends
+install(TARGETS books common
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
